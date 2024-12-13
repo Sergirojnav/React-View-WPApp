@@ -1,0 +1,501 @@
+body {
+  position: relative;
+  width: 100%;
+  background-color: #012153;
+  color: #ffffff;
+}
+
+/* Establece el contenedor principal con una fuente específica, relleno alrededor del contenido, y usa flexbox para la disposición de los elementos hijos */
+.header-container {
+  margin: 40px; /* Espacio interno alrededor del contenido del contenedor principal */
+  display: flex;
+  flex-direction: column; /* Disposición vertical de los elementos hijos */
+  height: 100vh; /* Altura del contenedor principal ajustada al 95% de la altura del viewport */
+}
+
+/* Estilo para el contenedor de contenido principal, ajustando su tamaño y disposición */
+.content-main {
+  flex: 1; /* Ocupa todo el espacio restante en el contenedor principal */
+  display: flex;
+  justify-content: space-evenly; /* Distribuye los elementos de forma uniforme con espacio igual entre ellos */
+  /* align-items: center; Alinea los elementos verticalmente al centro */
+  overflow: auto; /* Permite que el contenido se desplace si excede el tamaño del contenedor */
+}
+
+/* Estilos por defecto: alinear a la derecha */
+.sycai-logo {
+  width: 100%; /* Ancho del logo es el 100% del contenedor principal */
+  height: 10vh; /* Altura del logo relativa a la altura del viewport */
+  position: relative; /* Posiciona el logo dentro de su contenedor de forma relativa */
+  flex-shrink: 0; /* Previene que el logo se reduzca si hay falta de espacio */
+}
+
+/* Estilos por defecto: alinear a la derecha */
+.sycai-logo_parts {
+  width: 100%; /* Ancho del logo es el 100% del contenedor principal */
+  height: 10vh; /* Altura del logo relativa a la altura del viewport */
+  position: relative; /* Posiciona el logo dentro de su contenedor de forma relativa */
+  flex-shrink: 0; /* Previene que el logo se reduzca si hay falta de espacio */
+}
+
+/* Ajusta la imagen dentro del div del logo, manteniendo la proporción y llenando el contenedor */
+.logo-image {
+  position: absolute; /* Posiciona la imagen de forma absoluta dentro del contenedor logo */
+  right: 0; /* Alinea la imagen al borde derecho del contenedor */
+  height: 100%; /* Altura de la imagen al 100% de la altura del contenedor logo */
+  width: auto; /* Mantiene la proporción original de la imagen */
+  object-fit: cover; /* Asegura que la imagen cubra el contenedor sin distorsionarse */
+}
+
+table {
+  margin-top: 1%;
+  background-color: rgba(255, 255, 255, 0.644);
+  text-align: center;
+  border-collapse: collapse;
+  width: 100%;
+  position: relative;
+  font-weight: bold;
+  /* Agregamos posición relativa a la tabla */
+}
+
+.title {
+    color: white;
+    width: 100%;
+}
+
+/* Estilo para el encabezado dentro del div de título */
+.title h1 {
+  text-align: left; /* Centra el título dentro de su contenedor */
+  font-weight: bold;
+  font-size: 4.3vh; /* El tamaño de la fuente será 1% de la altura del viewport */
+}
+
+/* Estilo para el encabezado dentro del div de título */
+.patient-table-container .title h1 {
+  /* Centra el título dentro de su contenedor */
+  font-weight: bold;
+  font-size: 10vh; /* El tamaño de la fuente será 1% de la altura del viewport */
+  padding-bottom: 20px;
+}
+
+/* Ajusta el ancho del contenedor de la tabla y asegura que ocupe el 45% del contenedor principal */
+.patient-table-container {
+  width: 45%; /* Ajusta al 45% del ancho del contenedor principal */
+  display: flex;
+  justify-content: center; /* Centra la tabla horizontalmente */
+  flex-direction: column; /* Disposición vertical de los elementos */
+  position: relative;
+  top: -6vh;  /* Mueve hacia arriba */
+}
+
+/* Define que la tabla ocupe el 100% del ancho del contenedor que la rodea */
+.patient-table {
+  width: 85%; /* La tabla ocupa el 100% del ancho del contenedor */
+}
+
+.patient-table-container {
+    flex: 1; /* Ocupa el 50% del espacio disponible */
+    text-align: center;
+    margin-top: 0px;
+}
+
+/* Estilo para las celdas de la tabla, ajustando el espaciado y el comportamiento del texto */
+.patient-table td {
+  padding: 10px; /* Espacio interno en las celdas */
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  color: black;
+  /* Agregamos posición relativa a las celdas */
+}
+
+th{
+    color: ffffff;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+/* Estilo para la sección de los órganos */
+.patient-organs {
+  width: 45%; /* Ancho del contenedor de los órganos */
+  flex: 1; /* Ocupa el 50% del espacio disponible */
+  justify-content: center; /* Centra el contenido SVG dentro del contenedor */
+  align-items: center; /* Alinea los elementos verticalmente al centro */
+}
+
+/* Ajusta el tamaño del contenedor SVG para que se ajuste al ancho del contenedor padre */
+.svg-container {
+  width: 90%; /* Asegura que el SVG ocupe el ancho del contenedor */
+  height: auto; /* Mantiene la proporción del SVG para que no se distorsione */
+}
+
+/* Establece el contenedor principal con una fuente específica, relleno alrededor del contenido, y usa flexbox para la disposición de los elementos hijos */
+.summary-main {
+  margin-top: -60px; /* Espacio interno alrededor del contenido del contenedor principal */
+  display: flex;
+  flex-direction: column; /* Disposición vertical de los elementos hijos */
+  height: auto; /* Altura del contenedor principal ajustada al 95% de la altura del viewport */
+}
+
+/* Margen del titulo con la tabla summary*/
+.lesion-table-chart .title h1{
+    margin-bottom: 40px;
+}
+
+#liver-container,
+#kidney-container-left,
+#kidney-container-right,
+#pancreas-container {
+    margin-bottom: 70px;
+
+}
+
+/* Follow-up lesion */
+.images-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    flex-wrap: wrap;
+    position: relative;
+    top: 2vh;  /* Mueve hacia arriba */
+    margin-top: 0;  /* Asegura que no haya margen superior */
+    padding-top: 0; /* Elimina padding superior, si aplica */
+}
+/*dejar espacio entre un contenedor y otro*/
+.liver-main{
+    margin-top: 20vh;
+}
+
+/*Centrar footer + fecha de current y prior*/
+.lesion-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lesion-container{
+    margin-top: 5vh;
+}
+
+.img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+}
+
+#img-organ{
+    width: 500px;
+}
+
+.img-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    margin-top: 13px;
+
+}
+
+.dcm-dynamic-prior,
+.dcm-dynamic-current,
+.dcm-dynamic {
+    /* width: auto;
+    max-width: 840px; */
+    width: 350px;
+    max-width: 350px;
+    min-width: 350px;
+}
+
+.box-container {
+    display: flex;
+    align-items: flex-start; /* Cambiado de center a flex-start */
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.box {
+    padding: px; /* Reducido el padding */
+    margin: 5px;
+    width: 161px; /* Ancho fijo de la caja */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.box img {
+    max-width: 100%;
+    max-height: 150px; /* Ajusta la altura máxima de la imagen */
+    width: auto;
+    height: auto;
+    object-fit: cover; /* Mantiene la proporción de la imagen y la recorta si es necesario */
+}
+
+.box button {
+    margin-top: 0px; /* Añade un margen superior para separar el botón de la imagen */
+    width: 161px;
+}
+
+.lesion-table {
+    margin-top: 115px;
+    text-align: center;
+    align-items: center;
+}
+
+.lesion-table th,
+.lesion-table td {
+    padding: 26.5px;
+
+}
+
+.lesion-table thead {
+    background-color: #304769;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-size: 23px;
+}
+
+.lesion-table tbody{
+
+}
+.lesion-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.lesion-table td {
+    /* background-color:#dddddd; */
+    color: #000000;
+    font-weight: bold;
+    background-color: #dddddd;
+}
+
+.lesion-table tr:hover td {
+    background-color: #8d8d8d;
+    transition: .3s;
+    color: rgb(8, 8, 8);
+}
+
+#table-box{
+    background-color: #ddddddbd;
+}
+
+.img-prior{
+    /* margin-top: 75px; */
+    background-color: #000;
+}
+
+.img-current{
+    background-color: #000;
+}
+
+.lesion-table-chart th,
+.lesion-table-chart td {
+    padding: 25px;
+    text-align: center;
+}
+
+.lesion-table-chart thead {
+    background-color: #304769;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+}
+
+.lesion-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.lesion-table-chart td {
+    /* background-color:#dddddd; */
+    color: #000000;
+    font-weight: bold;
+    background-color: #dddddd;
+}
+
+.lesion-table tr:hover td {
+    background-color: #8d8d8d;
+    transition: .3s;
+    color: rgb(8, 8, 8);
+}
+
+.lesion-table-chart {
+    width: 100%;
+
+}
+
+
+@media (max-width: 768px) {
+    .sycai-logo, .content-main{
+        text-align: center;
+    }
+
+    .patient-table-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 50%;
+    }
+
+    th, td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f200;
+    }
+
+    .img-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+    }
+
+    #img-organ {
+        width: 270px;
+    }
+
+    .img-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .dcm-dynamic-current, .dcm-dynamic {
+        width: 315px;
+        max-width: 315px;
+    }
+
+    .box-container {
+        display: flex;
+        justify-content: center; /* Centra horizontalmente todas las cajas */
+        align-items: flex-start; /* Alinea verticalmente las cajas al inicio del contenedor */
+        flex-wrap: wrap; /* Permite que las cajas se ajusten a múltiples líneas si es necesario */
+        margin-top: 20px;
+    }
+
+    #carouselPancreas,
+    #carouselLiver,
+    #carouselKidney{
+        display: flex;
+        justify-content: center; /* Centra horizontalmente todas las cajas */
+        align-items: flex-start; /* Alinea verticalmente las cajas al inicio del contenedor */
+        flex-wrap: wrap; /* Permite que las cajas se ajusten a múltiples líneas si es necesario */
+        margin-top: 20px;
+        width: 120px;
+    }
+
+    .box {
+        padding: 10px; /* Reducido el padding */
+        margin: 10px;
+        width: 130px; /* Ancho fijo de la caja */
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .box img {
+        max-width: 100%;
+        max-height: 130px; /* Ajusta la altura máxima de la imagen */
+        width: auto;
+        height: auto;
+        object-fit: cover; /* Mantiene la proporción de la imagen y la recorta si es necesario */
+    }
+
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.lesion-table-chart {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.lesion-table-chart th, .lesion-table-chart td {
+    padding: 8px;
+
+}
+
+@media screen and (max-width: 600px) {
+    .lesion-table-chart th, .lesion-table-chart td {
+        font-size: 12px;
+        padding: 4px;
+    }
+}
+
+main article {
+    color: #ffffff;
+    background: #ffffff00;
+    padding: 20px;
+}
+aside {
+    background: #23839900;
+    padding: 20px;
+}
+footer {
+    background: #783532;
+    padding: 20px;
+}
+
+.img-fluid {
+  width: 610px;
+  height: auto;
+}
+
+.img-fluid-current{
+    width: 300px;
+}
+
+#carouselPancreas,
+#carouselLiver,
+#carouselKidney {
+    display: flex;
+    flex-wrap: wrap; /* Para permitir que los elementos se envuelvan en la siguiente línea si es necesario */
+}
+
+.image-column {
+    margin: 10px; /* Añadir un poco de margen entre las columnas */
+}
+
+.wo_detection {
+            fill: #bacbd7c9; /* Color gris con transparencia */
+			stroke: #ffffffdf;
+        }
+.w_detection {
+    fill: #E08144; /* Color gris con transparencia */
+    stroke: #ffffffdf;
+}
+
+.table-organ-container {
+    padding-bottom: 50px;
+    text-align: center;
+}
+
+.table-organ-container h3 {
+    color: white;
+}
+
+
+

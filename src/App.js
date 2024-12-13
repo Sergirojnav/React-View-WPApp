@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/home/Home';
+import Navbar from './components/Navbar';
+import MatchForm from './components/MatchForm';
+import UploadExcel from './components/UploadExcel';
+import MatchPage from './components/MatchPage';
+// import AllMatches from './components/AllMatches';
+// import NextMatches from './components/NextMatches';
+import './assets/styles.css'; // Importa los estilos CSS
+import MatchesList from './components/MatchesList';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    return (
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/match-form" element={<MatchForm />} /> {/* Ruta para MatchForm */}
+          <Route path="/upload-excel" element={<UploadExcel />} /> {/* Ruta para MatchForm */}
+          <Route path="/all-matches" element={<MatchPage />} /> {/* Ruta para MatchForm */}
+        </Routes>
+      </Router>
+    );
+  }
 
 export default App;

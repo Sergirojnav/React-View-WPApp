@@ -1,0 +1,329 @@
+/* Estilos generales para el Sidebar */
+.sidebar {
+    height: 100vh;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #005f73; /* Color de fondo azul oscuro */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Asegura que el sidebar esté encima del contenido */
+}
+
+/* Logo del Sidebar */
+.sidebar-logo {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Enlaces del Sidebar */
+.sidebar-links {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-links li {
+    margin-bottom: 35px;
+}
+
+.sidebar-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar-links a:hover {
+    background-color: #0077b6; /* Color de fondo al pasar el ratón */
+    color: #ffffff;
+}
+
+/* Ajustes para el contenido principal */
+.main-content {
+    margin-left: 400px; /* Ajusta el margen para que haya más espacio entre el sidebar y el contenido */
+    padding: 20px;
+    background-color: #f4f7fa;
+}
+
+/* General body styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Ajuste de la altura del contenedor del contenido para no solaparse con el navbar */
+.app-content {
+    padding-top: 75px;  /* Ajustado para compensar el navbar más ancho */
+}
+
+/* Estilos para el formulario */
+/* Estilos básicos para el formulario de partidos */
+.match-form-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 0;
+    max-width: 1150px;
+    position: relative;
+    margin-left: 280px;
+    width: calc(100% - 300px); /* Ajusta el ancho para el margen del sidebar */
+}
+
+/* Contenedor de equipos */
+.equipos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Sección de equipo */
+.equipo-section {
+    flex: 1;
+    min-width: 300px; /* Asegura que las secciones se mantengan legibles en pantallas pequeñas */
+    background-color: #e0f7fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabla de equipo */
+.equipo-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0;
+}
+
+.equipo-table th, .equipo-table td {
+    border: 1px solid #0077b6;
+    padding: 3px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.equipo-table th {
+    background-color: #0077b6;
+    color: #ffffff;
+}
+
+/* Contadores de goles y expulsiones */
+.counter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.counter-button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #0077b6;
+    background-color: #e0f7fa;
+    color: #0077b6;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.counter-button:hover {
+    background-color: #0077b6;
+    color: #ffffff;
+}
+
+.counter-button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Estilos para los resultados */
+.resultados-container {
+    margin-top: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #0077b6;
+}
+
+/* Estilos para botones */
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #0077b6;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #005f73;
+}
+
+/* Filas resaltadas */
+.highlight-red {
+    background-color: #f4acb2;
+}
+
+/* Expulsiones en amarillo */
+.expulsiones-yellow {
+    background-color: #fff9c4; /* Amarillo pálido para dos expulsiones */
+}
+
+/* Expulsiones en rojo */
+.expulsiones-red {
+    background-color: #f4acb2; /* Rojo pálido para tres expulsiones */
+}
+
+/* Entrada de búsqueda */
+.search-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #0077b6;
+    border-radius: 4px;
+}
+
+/* Dropdown */
+.dropdown-container {
+    position: relative;
+    width: 95%;
+}
+
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid #0077b6;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    margin-top: 4px;
+    padding: 0;
+    list-style: none;
+}
+
+.dropdown-item {
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #e0f7fa;
+}
+
+/* Media Queries para pantallas pequeñas */
+@media (max-width: 768px) {
+    .match-form-container {
+        margin-left: 0; /* Ajusta el margen para pantallas pequeñas */
+        width: 100%;
+    }
+
+    .equipos-container {
+        flex-direction: column;
+    }
+
+    .equipo-section {
+        margin-bottom: 20px; /* Añade margen inferior para separación en pantallas pequeñas */
+    }
+}
+
+/* Matches List styles */
+.matches-container {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.matches-list {
+    list-style-type: none;
+    padding: 0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.match-item {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.match-teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.team-name {
+    font-weight: bold;
+}
+
+.match-score {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Resultado css */
+.resultados-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-top: 20px; */
+}
+
+.resultado-section {
+    text-align: center;
+}
+
+.marcador {
+    display: flex;
+    align-items: center;
+}
+
+.resultado-local, .resultado-visitante {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+.separador {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+
+/* sidebar icons */
+
+/* Aplica estilo al contenedor del icono si necesitas más control */
+.icon-container {
+    margin-right: 13px; /* Añadir espacio entre el icono y el texto */
+}
+
+/* Estilo específico para el icono de 'Home' */
+.home-icon {
+    font-size: 15px; /* Cambia el tamaño del icono */
+
+}
