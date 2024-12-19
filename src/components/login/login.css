@@ -1,0 +1,90 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #023f57; /* Color de fondo similar */
+    color: #fff;
+  }
+  
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  /* Logo */
+  .login-logo img {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+  }
+  
+  /* Formulario */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+  }
+  
+  .login-input {
+    margin: 10px 1;
+    padding: 9.5px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    background-color: #f0f0f0; /* Fondo de los inputs */
+  }
+  
+  .login-button {
+    margin-top: 40px;
+    padding: 12px;
+    background-color: #5986a3; /* Fondo de botón igual a inputs */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background-color: #ddd;
+    color: #000000;
+  }
+  
+  /* Mensaje de error */
+  .error-message {
+    margin-top: 10px;
+    color: red;
+    font-size: 14px;
+  }
+  
+  /* Footer */
+  .login-footer {
+    margin-top: 20px;
+  }
+  
+  .forgot-password {
+    color: #fff;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .contact-info {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .contact-info a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  

@@ -1,19 +1,26 @@
+
 import React from 'react';
-import axios from 'axios';
-import TopScorer from './TopScorer';
-import TeamList from './TeamList';
-import './Home.css';  
+import Navbar from '../navbar/Navbar';
+import TopScorer from './topScorer/TopScorer';
+import TeamList from './teamList/TeamList';
+import './Home.css';
 
 const Home = () => {
     return (
-        <div className="dashboard-container">
-            <TopScorer />
-            <TeamList />
-            <div className="dashboard-card empty-card">
-                <h3>Contenedor Vacío 1</h3>
-            </div>
-            <div className="dashboard-card empty-card">
-                <h3>Contenedor Vacío 2</h3>
+        <div>
+            {/* Contenido principal del dashboard */}
+            <div className="dashboard-container">
+                <div className="dashboard-section">
+                    <TopScorer />
+                </div>
+                <div className="dashboard-section">
+                    <h3>Contenedor Vacío 2</h3>
+                </div>
+                {/* Contenedores vacíos adicionales */}
+                <div className="dashboard-section">
+                    <TeamList />
+                </div>
+
             </div>
         </div>
     );

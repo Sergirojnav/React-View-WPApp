@@ -1,72 +1,3 @@
-/* Estilos generales para el Sidebar */
-.sidebar {
-    height: 100vh;
-    width: 200px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #005f73; /* Color de fondo azul oscuro */
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Asegura que el sidebar esté encima del contenido */
-}
-
-/* Logo del Sidebar */
-.sidebar-logo {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-}
-
-/* Enlaces del Sidebar */
-.sidebar-links {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-links li {
-    margin-bottom: 35px;
-}
-
-.sidebar-links a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: 500;
-    display: block;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.sidebar-links a:hover {
-    background-color: #0077b6; /* Color de fondo al pasar el ratón */
-    color: #ffffff;
-}
-
-/* Ajustes para el contenido principal */
-.main-content {
-    margin-left: 400px; /* Ajusta el margen para que haya más espacio entre el sidebar y el contenido */
-    padding: 20px;
-    background-color: #f4f7fa;
-}
-
-/* General body styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-/* Ajuste de la altura del contenedor del contenido para no solaparse con el navbar */
-.app-content {
-    padding-top: 75px;  /* Ajustado para compensar el navbar más ancho */
-}
 
 /* Estilos para el formulario */
 /* Estilos básicos para el formulario de partidos */
@@ -230,21 +161,7 @@ button:hover {
     background-color: #e0f7fa;
 }
 
-/* Media Queries para pantallas pequeñas */
-@media (max-width: 768px) {
-    .match-form-container {
-        margin-left: 0; /* Ajusta el margen para pantallas pequeñas */
-        width: 100%;
-    }
 
-    .equipos-container {
-        flex-direction: column;
-    }
-
-    .equipo-section {
-        margin-bottom: 20px; /* Añade margen inferior para separación en pantallas pequeñas */
-    }
-}
 
 /* Matches List styles */
 .matches-container {

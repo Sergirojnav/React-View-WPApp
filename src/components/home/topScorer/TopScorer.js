@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faVolleyball } from '@fortawesome/free-solid-svg-icons';
-import './Home.css';
-import profileDefault from '../../assets/images/img_user_default.jpg';
+import profileDefault from '../../../assets/images/img_user_default.jpg';
 
 const TopScorer = () => {
     const [topScorers, setTopScorers] = useState([]);
@@ -63,12 +62,8 @@ const TopScorer = () => {
     };
 
     return (
-        <div className="dashboard-card top-scorer-card">
-            <h3>Máximos Goleadores
-                <span className="icon-container">
-                    <FontAwesomeIcon icon={faVolleyball} size="3x" className="home-icon" />
-                </span>
-            </h3>
+        <div className="dashboard-card">
+            <h2>Top Scorer</h2>
             {topFiveScorers.length > 0 ? (
                 <div className="scorer-list">
                     {topFiveScorers.map((scorer, index) => {
@@ -87,10 +82,10 @@ const TopScorer = () => {
                     })}
                 </div>
             ) : (
-                <p>Cargando datos...</p>
+                <p>No players available...</p>
             )}
             {topScorers.length > 3 && (
-                <button className="view-more-button" onClick={openAllScorers}>Ver más</button>
+                <button className="view-more-button" onClick={openAllScorers}>View More</button>
             )}
         </div>
     );

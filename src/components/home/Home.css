@@ -1,32 +1,49 @@
 /* Home.css */
+/*tamaño contenedores izquierda*/
+.dashboard-section{
+    width: 100%;
+}
+
+/* CONTAINER TOP SCORER */
+
+/*Ajusta el display de los contenedores*/
 .dashboard-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding: 20px;
-    background-color: #f4f4f4; /* Fondo gris claro para el área del panel */
-    margin-left: 250px; /* Margen para dejar espacio para el sidebar */
-    /* Asegúrate de ajustar el valor a la anchura real del sidebar */
 }
 
+/*ajustes de contenedor, colores, etc.*/
 .dashboard-card {
-    background-color: #ffffff; /* Fondo blanco para los contenedores */
+    background-color: #f0efef;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
+    margin-bottom: 20px;
+
+}
+
+/*Titulo contenedor top scorer /home*/
+.dashboard-card h2 {
+    color: #030303;
+    margin-top: -5px;
+}
+
+
+
+.scorer-card {
+    background-color: #cccccc; /* Fondo blanco para los contenedores */
+    border-radius: 5px;
+    padding: 20px;
     transition: transform 0.3s, box-shadow 0.3s;
     overflow: hidden;
+    color: #030303;
 }
 
-.dashboard-card:hover {
+.scorer-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.dashboard-card h3 {
-    margin: 0;
-    color: #005f73; /* Color del texto en el título */
-    font-size: 1.5rem;
 }
 
 .empty-card {
@@ -42,12 +59,7 @@
     grid-column: span 2; /* Ocupa todo el ancho en pantallas más pequeñas */
 }
 
-@media (max-width: 768px) {
-    .dashboard-container {
-        grid-template-columns: 1fr; /* Para pantallas pequeñas, una sola columna */
-        margin-left: 0; /* Sin margen en pantallas pequeñas */
-    }
-}
+/*TERMINA TOP SCORER*/
 
 
 /* Añadir estilos para el contenedor del ícono */
@@ -64,21 +76,8 @@
 
 /* Home.css */
 
-.dashboard-card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-}
 
-.top-scorer-card h3 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    color: #333;
-}
+
 
 .scorer-list {
     display: flex;
@@ -110,7 +109,7 @@
 
 .scorer-card-content h4 {
     margin: 0 0 4px 0;
-    font-size: 14px; /* Reduce el tamaño de la fuente */
+    font-size: 16px; /* Reduce el tamaño de la fuente */
 }
 
 .scorer-card-content p {
@@ -119,20 +118,57 @@
 }
 
 .view-more-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #284b70;
     color: #fff;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
     width: 100%; /* El botón ocupa todo el ancho */
 }
 
 .view-more-button:hover {
-    background-color: #0056b3;
+    background-color: #b1833d;
 }
 
+/*CONTENEDOR RESULTADOS*/
 
+.match-score {
+    font-weight: bold;
+    margin: 5px 0;
+}
 
+.team-card-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Estructura del resultado*/
+.team-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #cccccc;
+    color: #030303;
+    padding: 10px;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.team-card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85%;
+}
+
+.team-card-content span {
+    font-weight: bold;
+    text-align: center;
+    width: 100%; /* Aseguramos que los elementos se distribuyan bien */
+}
