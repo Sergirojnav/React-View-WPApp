@@ -3,6 +3,7 @@ import React from 'react';
 import Navbar from '../navbar/Navbar';
 import TopScorer from './topScorer/TopScorer';
 import TeamList from './teamList/TeamList';
+import Teams from './teams/Teams';
 import './Home.css';
 
 const Home = () => {
@@ -13,8 +14,8 @@ const Home = () => {
                 <div className="dashboard-section">
                     <TopScorer />
                 </div>
-                <div className="dashboard-section">
-                    <h3>Contenedor Vacío 2</h3>
+                <div className="dashboard-section-list">
+                <Teams />
                 </div>
                 {/* Contenedores vacíos adicionales */}
                 <div className="dashboard-section">

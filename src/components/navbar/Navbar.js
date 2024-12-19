@@ -1,68 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { faForward, faHome, faVolleyball, faFile, faUpload, faSliders } from '@fortawesome/free-solid-svg-icons';  
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-import './Navbar.css'; // Asegúrate de que este archivo CSS esté creado e incluya los estilos
+import './Navbar.css'; // Archivo CSS para estilos
 import logo from "../../assets/images/bwmf.png";
 import { useAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
-    const { isAuthenticated, getUsernameFromToken } = useAuth(); // Usamos el hook para obtener el nombre de usuario
-    const username = getUsernameFromToken() || 'Usuario'; // Si no hay token, mostramos 'Usuario'
+    const { isAuthenticated, getUsernameFromToken } = useAuth(); // Hook para autentificación
+    const username = getUsernameFromToken() || 'Usuario'; // Valor predeterminado
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para manejar el colapso
+
     return (
-        <div className="navbar">
-            <img src={logo} alt="Logo" className="navbar-logo" />
-            <ul className="navbar-menu">
-            <li>
-                    <Link to="/">
-                        <span className="icon-container">
-                            <FontAwesomeIcon icon={faHome} className="home-icon" />
-                        </span>
-                        Home
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/match-form">
-                        <span className="icon-container">
-                            <FontAwesomeIcon icon={faFile} className="home-icon" />
-                        </span>
-                        Match Form
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/upload-excel">
-                        <span className="icon-container">
-                            <FontAwesomeIcon icon={faUpload} className="home-icon" />
-                        </span>
-                        Upload
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/all-matches">
-                        <span className="icon-container">
-                            <FontAwesomeIcon icon={faVolleyball} className="home-icon" />
-                        </span>
-                        All Matches
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/">
-                        <span className="icon-container">
-                            <FontAwesomeIcon icon={faSliders} className="home-icon" />
-                        </span>
-                        Options
-                    </Link>
-                </li>
-            </ul>
-            <div className="navbar-user">
-                <span className="user-icon">👤</span> 
-                {isAuthenticated && (
-                <div className="sidebar-user">
-                    <span>{username}</span>
+        <nav className="navbar">
+            <div className="navbar-content">
+                <img src={logo} alt="Logo" className="navbar-logo" />
+                <button className="navbar-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    ☰
+                </button>
+                <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`}>
+                    <li>
+                        <Link to="/">
+                            <FontAwesomeIcon icon={faHome} /> Home
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/match-form">
+                            <FontAwesomeIcon icon={faFile} /> Match Form
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/upload-excel">
+                            <FontAwesomeIcon icon={faUpload} /> Upload
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/all-matches">
+                            <FontAwesomeIcon icon={faVolleyball} /> All Matches
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/">
+                            <FontAwesomeIcon icon={faSliders} /> Options
+                        </Link>
+                    </li>
+                </ul>
+                <div className="navbar-user">
+                    <span className="user-icon">👤</span>
+                    {isAuthenticated && <span>{username}</span>}
                 </div>
-                )}
             </div>
-        </div>
+        </nav>
     );
 };
 

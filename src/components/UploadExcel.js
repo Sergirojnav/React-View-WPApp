@@ -20,7 +20,7 @@ const UploadExcel = () => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('http://localhost:8080/upload', formData, {
+            const response = await axios.post('http://localhost:8080/partidos', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

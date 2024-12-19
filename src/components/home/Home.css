@@ -1,17 +1,33 @@
 /* Home.css */
-/*tamaño contenedores izquierda*/
-.dashboard-section{
+/* Contenedor principal de la página con 2 columnas */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas por defecto */
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Contenedor individual de cada sección */
+.dashboard-section {
     width: 100%;
 }
 
-/* CONTAINER TOP SCORER */
+/* Contenedor que debe ocupar toda la columna de la derecha en pantallas pequeñas */
+.dashboard-section-list {
+    width: 100%;
+    grid-column: span 1; /* En pantallas grandes ocupa solo una columna */
+}
 
-/*Ajusta el display de los contenedores*/
-.dashboard-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 20px;
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 1fr; /* Cambia a una columna en pantallas pequeñas */
+    }
+    
+    /* Cuando el contenedor de la lista de equipos es el de la derecha */
+    .dashboard-section-list {
+        grid-column: span 1; /* En pantallas pequeñas, ocupa toda la columna */
+    }
 }
 
 /*ajustes de contenedor, colores, etc.*/
@@ -172,3 +188,9 @@
     text-align: center;
     width: 100%; /* Aseguramos que los elementos se distribuyan bien */
 }
+
+
+
+
+
+
