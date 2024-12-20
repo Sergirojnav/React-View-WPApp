@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '../navbar/Navbar';
 import TopScorer from './topScorer/TopScorer';
@@ -9,19 +8,22 @@ import './Home.css';
 const Home = () => {
     return (
         <div>
-            {/* Contenido principal del dashboard */}
+            {/* Contenedor principal del dashboard */}
             <div className="dashboard-container">
-                <div className="dashboard-section">
-                    <TopScorer />
-                </div>
-                <div className="dashboard-section-list">
-                <Teams />
-                </div>
-                {/* Contenedores vacíos adicionales */}
-                <div className="dashboard-section">
-                    <TeamList />
+                {/* Contenedor izquierdo con dos secciones */}
+                <div className="dashboard-left">
+                    <div className="dashboard-section">
+                        <TopScorer />
+                        <TeamList />
+                    </div>
                 </div>
 
+                {/* Contenedor derecho que ocupa el resto */}
+                <div className="dashboard-right">
+                    <div className="dashboard-section">
+                        <Teams />
+                    </div>
+                </div>
             </div>
         </div>
     );

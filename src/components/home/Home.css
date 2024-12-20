@@ -1,32 +1,64 @@
 /* Home.css */
-/* Contenedor principal de la página con 2 columnas */
+/* Contenedor principal del dashboard */
 .dashboard-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas por defecto */
-    gap: 20px;
-    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Espacio entre los contenedores */
+    flex-wrap: wrap; /* Asegura que los elementos se apilen si no hay suficiente espacio */
+    margin: 20px; /* Margen global para todo el dashboard */
 }
 
-/* Contenedor individual de cada sección */
+/* Contenedor izquierdo con los 2 elementos encima */
+.dashboard-left {
+    display: flex;
+    flex-direction: column; /* Los elementos van uno encima del otro */
+    width: 50%; /* Ajusta el tamaño del contenedor izquierdo */
+    gap: 20px; /* Espacio entre los contenedores */
+}
+
+/* Contenedor derecho (Teams) que ocupa el resto */
+.dashboard-right {
+    width: 50%; /* El contenedor derecho ocupa el 48% del espacio */
+
+}
+
+/* Ajuste para el contenido de cada sección */
 .dashboard-section {
-    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
 }
 
 /* Contenedor que debe ocupar toda la columna de la derecha en pantallas pequeñas */
 .dashboard-section-list {
-    width: 100%;
-    grid-column: span 1; /* En pantallas grandes ocupa solo una columna */
+    background-color: #f0efef;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    /* Establecer una altura máxima para permitir el desplazamiento */
+    max-height: 700px; /* Ajusta la altura máxima según lo que necesites */
+    overflow-y: auto; /* Agrega un scrollbar vertical cuando el contenido sobrepase */
 }
 
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
     .dashboard-container {
-        grid-template-columns: 1fr; /* Cambia a una columna en pantallas pequeñas */
+        display: flex;
+        flex-direction: column; /* Cambia a una columna en pantallas pequeñas */
+
     }
-    
+
+    .dashboard-left {
+        width: 100%; /* En pantallas pequeñas, los contenedores ocupan el 100% */
+    }
+
+    .dashboard-right {
+        width: 95%; /* En pantallas pequeñas, los contenedores ocupan el 100% */
+    }
+
+
     /* Cuando el contenedor de la lista de equipos es el de la derecha */
     .dashboard-section-list {
-        grid-column: span 1; /* En pantallas pequeñas, ocupa toda la columna */
+        width: 100%; /* Asegura que ocupe el 100% en pantallas pequeñas */
     }
 }
 
@@ -41,7 +73,8 @@
 }
 
 /*Titulo contenedor top scorer /home*/
-.dashboard-card h2 {
+.dashboard-card h2,
+.dashboard-section-list h2 {
     color: #030303;
     margin-top: -5px;
 }
@@ -189,6 +222,55 @@
     width: 100%; /* Aseguramos que los elementos se distribuyan bien */
 }
 
+/* TEAMS */
+.team-card-header {
+    display: flex;
+    align-items: center; /* Centra verticalmente el logo y el texto */
+    justify-content: center; /* Centrar horizontalmente */
+    gap: 10px; /* Espacio entre el logo y el texto */
+    padding: 6px;
+    width: 100%;
+    height: 48px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease; /* Suaviza el cambio de tamaño */
+}
+
+/* Imagen dentro del equipo */
+.team-card-header img {
+    width: 8vw; /* Usamos un tamaño relativo para que se ajuste según el tamaño de la pantalla */
+    max-width: 30px; /* Límite máximo del tamaño de la imagen */
+    object-fit: cover; /* Ajusta la imagen al contenedor sin deformarla */
+    transition: width 0.3s ease; /* Suaviza el cambio de tamaño */
+}
+
+/* Nombre del equipo */
+.team-name {
+    font-size: 1rem; /* Tamaño relativo para fuentes */
+    font-weight: bold;
+    text-align: center;
+    transition: font-size 0.3s ease; /* Suaviza el cambio de tamaño de la fuente */
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .team-card-header {
+        flex-direction: column; /* Apilar el logo y el texto verticalmente */
+        align-items: center; /* Centrar el contenido */
+        gap: 5px; /* Reducir el espacio entre los elementos */
+        width: 100%;
+        height: 100px;
+    }
+
+    .team-card-header img {
+        width: 20vw; /* La imagen será más grande en pantallas pequeñas */
+        max-width: 40px; /* Ajuste de tamaño máximo */
+    }
+
+    .team-name {
+        font-size: 1.2rem; /* Aumentar el tamaño de fuente en pantallas pequeñas */
+    }
+}
 
 
 
