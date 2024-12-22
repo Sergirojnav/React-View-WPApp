@@ -1,0 +1,92 @@
+/* TeamsCarousel.css */
+
+.carousel-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 340px; /* Ajusta según el tamaño que prefieras */
+  overflow: hidden; /* Ocultar los equipos que están fuera del área visible */
+}
+
+.carousel {
+  display: flex;
+  transition: transform 1s ease; /* Desplazamiento suave */
+  justify-content: center;
+  align-items: center;
+  width: 600px; /* Ajusta el ancho total visible */
+}
+
+.carousel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 150px; /* Ajusta el tamaño de las cards */
+  margin: 0 50px;
+  opacity: 0.5; /* Lateral */
+  transform: scale(0.8); /* Lateral más pequeño */
+  transition: opacity 0.5s ease, transform 0.1s ease;
+}
+
+.carousel-item.active {
+  opacity: 1; /* El equipo central tendrá una opacidad completa */
+  transform: scale(1.5); /* El equipo central será más grande */
+}
+
+.carousel-item.side {
+  opacity: 0.5; /* Reducir opacidad en los laterales */
+  transform: scale(0.8); /* Reducir tamaño en los laterales */
+}
+
+.team-logo-container {
+  width: 150px;
+  height: 130px;
+  margin-bottom: 10px;
+}
+
+.team-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.team-name {
+  font-size: 1.2em;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* Flechas de navegación */
+.carousel-prev, .carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+
+}
+
+
+.carousel-prev {
+  left: 10px;
+}
+
+.carousel-next {
+  right: 10px;
+}
+
+.carousel-prev img, .carousel-next img {
+width: 20px;
+
+}
+
+.carousel-prev img:hover, .carousel-next img:hover {
+  width: 30px;
+  }
+
+.carousel-next .carousel-arrow {
+  transform: rotate(180deg); /* Gira la flecha 180 grados */
+}

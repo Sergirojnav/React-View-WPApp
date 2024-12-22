@@ -1,8 +1,12 @@
 /* General navbar styling */
 .navbar {
-    background-color: #3d788f;
-    color: white;
-    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #0064a6;
+}
+
+.navbar-menu li .active {
+    font-weight: bold;
+    color: #0068a9; /* Cambia el color si quieres */
 }
 
 .navbar-content {
@@ -13,8 +17,8 @@
 }
 
 .navbar-logo {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
 }
 
 .navbar-menu {
@@ -22,13 +26,13 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 40px;
+    gap: 100px;
     transition: max-height 0.3s ease-in-out;
     overflow: hidden;
 }
 
 .navbar-menu li a {
-    color: white;
+    color: #0064a6;
     text-decoration: none;
     font-size: 18px;
     transition: color 0.3s ease;
@@ -67,8 +71,8 @@
 
     .navbar-logo {
         margin-bottom: 10px; /* Espacio entre logo y botón */
-        width: 20%;
-        height: 20%;
+        width: 60px;
+        height: 60px;
     }
 
     .navbar-toggle {

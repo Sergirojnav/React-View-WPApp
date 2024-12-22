@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { faForward, faHome, faVolleyball, faFile, faUpload, faSliders } from '@fortawesome/free-solid-svg-icons';  
+import { Link, useLocation } from 'react-router-dom'; // Importa useLocation
+import { faForward, faHome, faVolleyball, faFile, faUpload, faSliders, faChartSimple} from '@fortawesome/free-solid-svg-icons';  
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import './Navbar.css'; // Archivo CSS para estilos
 import logo from "../../assets/images/bwmf.png";
@@ -11,6 +11,8 @@ const Navbar = () => {
     const username = getUsernameFromToken() || 'Usuario'; // Valor predeterminado
     const [isMenuOpen, setIsMenuOpen] = useState(false); // Estado para manejar el colapso
 
+    const location = useLocation(); // Obtener la ubicación actual
+
     return (
         <nav className="navbar">
             <div className="navbar-content">
@@ -20,28 +22,33 @@ const Navbar = () => {
                 </button>
                 <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`}>
                     <li>
-                        <Link to="/">
-                            <FontAwesomeIcon icon={faHome} /> Home
+                        <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
+                            <FontAwesomeIcon icon={faHome} /> HOME
                         </Link>
                     </li>
                     <li>
-                        <Link to="/match-form">
-                            <FontAwesomeIcon icon={faFile} /> Match Form
+                        <Link to="/match-form" className={location.pathname === '/match-form' ? 'active' : ''}>
+                            <FontAwesomeIcon icon={faFile} /> MATCH REPORT
                         </Link>
                     </li>
                     <li>
-                        <Link to="/upload-excel">
-                            <FontAwesomeIcon icon={faUpload} /> Upload
+                        <Link to="/all-matches" className={location.pathname === '/all-matches' ? 'active' : ''}>
+                            <FontAwesomeIcon icon={faVolleyball} /> ALL MATCHES
                         </Link>
                     </li>
                     <li>
-                        <Link to="/all-matches">
-                            <FontAwesomeIcon icon={faVolleyball} /> All Matches
+                        <Link to="/match-form" className={location.pathname === '/match-form' ? 'active' : ''}>
+                            <FontAwesomeIcon icon={faChartSimple} /> STATICS
                         </Link>
                     </li>
                     <li>
-                        <Link to="/">
-                            <FontAwesomeIcon icon={faSliders} /> Options
+                        <Link to="/upload-excel" className={location.pathname === '/upload-excel' ? 'active' : ''}>
+                            <FontAwesomeIcon icon={faUpload} /> UPLOAD
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/options" className={location.pathname === '/options' ? 'active' : ''}>
+                            <FontAwesomeIcon icon={faSliders} /> OPTIONS
                         </Link>
                     </li>
                 </ul>
