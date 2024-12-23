@@ -19,6 +19,8 @@ const MatchForm = () => {
     const [searchVisitante, setSearchVisitante] = useState('');
     const [showDropdownLocal, setShowDropdownLocal] = useState(false);
     const [showDropdownVisitante, setShowDropdownVisitante] = useState(false);
+    const [entrenadorLocal, setEntrenadorLocal] = useState(null);
+    const [entrenadorVisitante, setEntrenadorVisitante] = useState(null);
 
     useEffect(() => {
         axios.get('http://localhost:8080/equipos')
@@ -31,18 +33,36 @@ const MatchForm = () => {
             axios.get(`http://localhost:8080/equipos/${equipoLocal}/jugadores`)
                 .then(response => setJugadoresLocal(response.data))
                 .catch(error => console.error('Error fetching jugadores local:', error));
+    
+            // Aquí corregimos la estructura de la API para obtener el entrenador directamente
+            axios.get(`http://localhost:8080/equipos/${equipoLocal}/staff`)
+                .then(response => {
+                    const entrenador = response.data.find(person => person.rol === 'coach'); // Buscar entrenador con el rol 'coach'
+                    setEntrenadorLocal(entrenador || null); // Asignar el entrenador si existe
+                })
+                .catch(error => console.error('Error fetching entrenador local:', error));
         } else {
             setJugadoresLocal([]);
+            setEntrenadorLocal(null);
         }
     }, [equipoLocal]);
-
+    
     useEffect(() => {
         if (equipoVisitante) {
             axios.get(`http://localhost:8080/equipos/${equipoVisitante}/jugadores`)
                 .then(response => setJugadoresVisitante(response.data))
                 .catch(error => console.error('Error fetching jugadores visitante:', error));
+    
+            // Corregimos la misma lógica para el equipo visitante
+            axios.get(`http://localhost:8080/equipos/${equipoVisitante}/staff`)
+                .then(response => {
+                    const entrenador = response.data.find(person => person.rol === 'coach'); // Buscar entrenador con el rol 'coach'
+                    setEntrenadorVisitante(entrenador || null); // Asignar el entrenador si existe
+                })
+                .catch(error => console.error('Error fetching entrenador visitante:', error));
         } else {
             setJugadoresVisitante([]);
+            setEntrenadorVisitante(null);
         }
     }, [equipoVisitante]);
 
@@ -107,7 +127,7 @@ const MatchForm = () => {
 
     const handleDownloadExcel = () => {
         const fechaPartido = new Date().toISOString().split('T')[0];
-    
+
         const dataLocal = jugadoresLocal.map(jugador => ({
             Equipo: equipos.find(e => e.id === equipoLocal)?.nombre || 'Equipo Local',
             Nombre: jugador.nombre,
@@ -116,7 +136,7 @@ const MatchForm = () => {
             Expulsiones: expulsionesLocal[jugador.id] || 0,
             Resultado: resultadoLocal // Añadir el resultado local
         }));
-    
+
         const dataVisitante = jugadoresVisitante.map(jugador => ({
             Equipo: equipos.find(e => e.id === equipoVisitante)?.nombre || 'Equipo Visitante',
             Nombre: jugador.nombre,
@@ -125,27 +145,31 @@ const MatchForm = () => {
             Expulsiones: expulsionesVisitante[jugador.id] || 0,
             Resultado: resultadoVisitante // Añadir el resultado visitante
         }));
-    
+
         const combinedData = [
             { Equipo: 'Equipo', Nombre: 'Nombre', NumeroGorro: 'Número de Gorro', Goles: 'Goles', Expulsiones: 'Expulsiones', Resultado: 'Resultado' },
             ...dataLocal,
             ...dataVisitante
         ];
-    
+
         const ws = XLSX.utils.json_to_sheet(combinedData, { skipHeader: true });
-    
+
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Partido');
-    
+
         XLSX.writeFile(wb, `partido_${fechaPartido}.xlsx`);
     };
 
     const handleDropdownClickLocal = () => {
-        setShowDropdownLocal(!showDropdownLocal);
+        if (!equipoLocal) {
+            setShowDropdownLocal(!showDropdownLocal);
+        }
     };
 
     const handleDropdownClickVisitante = () => {
-        setShowDropdownVisitante(!showDropdownVisitante);
+        if (!equipoVisitante) {
+            setShowDropdownVisitante(!showDropdownVisitante);
+        }
     };
 
     const handleSelectEquipo = (equipoId, equipo) => {
@@ -157,6 +181,14 @@ const MatchForm = () => {
             setEquipoVisitante(equipoId);
             setSearchVisitante('');
             setShowDropdownVisitante(false);
+        }
+    };
+
+    const handleRemoveEquipo = (equipo) => {
+        if (equipo === 'local') {
+            setEquipoLocal('');
+        } else {
+            setEquipoVisitante('');
         }
     };
 
@@ -172,35 +204,47 @@ const MatchForm = () => {
         <div className="match-form-container">
             <div className="equipos-container">
                 <div className="equipo-section">
-                    <label>Equipo Local:</label>
-                    <div className="dropdown-container">
-                        <input 
-                            type="text" 
-                            placeholder="Buscar equipo local..." 
-                            value={searchLocal} 
-                            onClick={handleDropdownClickLocal}
-                            onChange={e => setSearchLocal(e.target.value)}
-                            className="search-input"
-                        />
-                        {showDropdownLocal && (
-                            <ul className="dropdown-list">
-                                {filteredEquiposLocal.map(equipo => (
-                                    <li 
-                                        key={equipo.id}
-                                        onClick={() => handleSelectEquipo(equipo.id, 'local')}
-                                        className="dropdown-item"
-                                    >
-                                        {equipo.nombre}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
+                    {!equipoLocal ? (
+                        <>
+                            <div className="dropdown-container">
+                            <p>Equipo Local:</p>
+                                <input 
+                                    type="text" 
+                                    placeholder="Buscar equipo local..." 
+                                    value={searchLocal} 
+                                    onClick={handleDropdownClickLocal}
+                                    onChange={e => setSearchLocal(e.target.value)}
+                                    className="search-input"
+                                />
+                                {showDropdownLocal && (
+                                    <ul className="dropdown-list">
+                                        {filteredEquiposLocal.map(equipo => (
+                                            <li 
+                                                key={equipo.id}
+                                                onClick={() => handleSelectEquipo(equipo.id, 'local')}
+                                                className="dropdown-item"
+                                            >
+                                                {equipo.nombre}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="selected-team">
+                            <h4>{equipos.find(e => e.id === equipoLocal)?.nombre}</h4>
+                            <button className="remove-button" onClick={() => handleRemoveEquipo('local')}>X</button>
+                        </div>
+                    )}
+                    <div className="coach">
+                    <p>COACH</p>
+                    <p>{entrenadorLocal ? `${entrenadorLocal.nombre} ${entrenadorLocal.apellido}` : 'No disponible'}</p>
                     </div>
-                    <h4>{equipoLocal ? equipos.find(e => e.id === equipoLocal)?.nombre : 'Equipo Local'}</h4>
                     <table className="equipo-table">
                         <thead>
                             <tr>
-                                <th>Número de Gorro</th>
+                                <th></th>
                                 <th>Nombre</th>
                                 <th>Expulsiones</th>
                                 <th>Goles</th>
@@ -239,49 +283,58 @@ const MatchForm = () => {
                 <div className="resultados-container">
                     <div className="resultado-section">
                         <div className="marcador">
-                            <div className="resultado-local">
-                                <p>{resultadoLocal}</p>
-                            </div>
+                            <p>{resultadoLocal}</p>
                             <span className="separador">-</span>
-                            <div className="resultado-visitante">
-                                <p>{resultadoVisitante}</p>
-                            </div>
+                            <p>{resultadoVisitante}</p>
                         </div>
                     </div>
-                    <button className="submit-button" onClick={handleSubmit}>Guardar Partido</button>
-                    <button className="download-button" onClick={handleDownloadExcel}>Descargar Excel</button>
+                    <button className="download-button" onClick={handleDownloadExcel}>DOWNLOAD</button>
+                    <button className="submit-button" onClick={handleSubmit}>SAVE</button>
                 </div>
 
                 <div className="equipo-section">
-                    <label>Equipo Visitante:</label>
-                    <div className="dropdown-container">
-                        <input 
-                            type="text" 
-                            placeholder="Buscar equipo visitante..." 
-                            value={searchVisitante} 
-                            onClick={handleDropdownClickVisitante}
-                            onChange={e => setSearchVisitante(e.target.value)}
-                            className="search-input"
-                        />
-                        {showDropdownVisitante && (
-                            <ul className="dropdown-list">
-                                {filteredEquiposVisitante.map(equipo => (
-                                    <li 
-                                        key={equipo.id}
-                                        onClick={() => handleSelectEquipo(equipo.id, 'visitante')}
-                                        className="dropdown-item"
-                                    >
-                                        {equipo.nombre}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
+                    {!equipoVisitante ? (
+                        <>
+                            <div className="dropdown-container">
+                            <p>Equipo Visitante:</p>
+                                <input 
+                                    type="text" 
+                                    placeholder="Search team..." 
+                                    value={searchVisitante} 
+                                    onClick={handleDropdownClickVisitante}
+                                    onChange={e => setSearchVisitante(e.target.value)}
+                                    className="search-input"
+                                />
+                                {showDropdownVisitante && (
+                                    <ul className="dropdown-list">
+                                        {filteredEquiposVisitante.map(equipo => (
+                                            <li 
+                                                key={equipo.id}
+                                                onClick={() => handleSelectEquipo(equipo.id, 'visitante')}
+                                                className="dropdown-item"
+                                            >
+                                                {equipo.nombre}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        </>
+                    ) : (
+                        <div className="selected-team">
+                            <h4>{equipos.find(e => e.id === equipoVisitante)?.nombre}</h4>
+                            
+                            <button className="remove-button" onClick={() => handleRemoveEquipo('visitante')}>X</button>
+                        </div>
+                    )}
+                    <div className="coach">
+                    <p>COACH</p>
+                    <p>{entrenadorVisitante ? `${entrenadorVisitante.nombre} ${entrenadorVisitante.apellido}` : 'No disponible'}</p>
                     </div>
-                    <h4>{equipoVisitante ? equipos.find(e => e.id === equipoVisitante)?.nombre : 'Equipo Visitante'}</h4>
                     <table className="equipo-table">
                         <thead>
                             <tr>
-                                <th>Número de Gorro</th>
+                                <th></th>
                                 <th>Nombre</th>
                                 <th>Expulsiones</th>
                                 <th>Goles</th>
@@ -317,7 +370,7 @@ const MatchForm = () => {
                     </table>
                 </div>
             </div>
-            </div>
+        </div>
     );
 };
 

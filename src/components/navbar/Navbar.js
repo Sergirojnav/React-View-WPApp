@@ -37,7 +37,7 @@ const Navbar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/match-form" className={location.pathname === '/match-form' ? 'active' : ''}>
+                        <Link to="/stats" className={location.pathname === '/stats' ? 'active' : ''}>
                             <FontAwesomeIcon icon={faChartSimple} /> STATICS
                         </Link>
                     </li>

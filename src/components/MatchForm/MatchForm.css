@@ -23,12 +23,56 @@
     justify-content: flex-start;
     align-items: flex-start;
     width: 30%;
-    background-color: #76adcdad;
-    padding: 20px;
+    background-color: #76adcdbb;
+    /* padding: 20px; */
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+
+.dropdown-container{
+    position: relative; /* Permite posicionar la lista relativa al contenedor */
+    padding: 20px;
+    display: flex;
+    background-color: #f8f8f8;
+    color: #0068a9;
+    border-radius: 15px;
+    justify-content: space-between;
+    padding: 15px 20px;
+    width: 93%;
+}
+
+.dropdown-container input{
+    width: 70%;
+}
+
+.dropdown-list {
+    position: absolute; /* Se posicionará relativo al contenedor */
+    top: 100%; /* Alinea la lista justo debajo del input */
+    left: 0;
+    width: 93%; /* Se asegura de ocupar el mismo ancho que el contenedor */
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-top: 5px; /* Espaciado entre el input y la lista */
+    z-index: 1000; /* Evita problemas de superposición */
+    max-height: 200px; /* Limita la altura del dropdown */
+    overflow-y: auto; /* Agrega scroll si es necesario */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Agrega un efecto visual */
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    color: #0068a9;
+    font-weight: bold;
+}
+
+.dropdown-item:hover {
+    background-color: #0068a9;
+    color: white;
+}
+
 
 .equipo-section h4 {
     margin-bottom: 10px;
@@ -40,17 +84,25 @@
 .equipo-section table {
     width: 100%;
     border-collapse: collapse;
+    
 }
 
 .equipo-section table th, .equipo-section table td {
-    padding: 10px;
+    padding: 8px;
     text-align: center;
-    border: 1px solid #ddd;
+    border: none;
+    font-weight: bold;
+    /* border: 1px solid #ddd; */
+     
 }
 
 .equipo-section table th {
-    background-color: #e0e0e0;
+    background-color: #ffffffda;
+    border: none;
+    color: #0068a9;
 }
+
+
 
 .counter-container {
     display: flex;
@@ -60,7 +112,7 @@
 }
 
 .counter-button {
-    background-color: #4CAF50;
+    background-color: #0068a9;
     font-weight: bold;
     color: #0068a9;
     padding: 5px 10px;
@@ -90,6 +142,11 @@
     align-items: center;
 }
 
+.marcador{
+    display: flex;
+}
+
+
 .resultado-section {
     display: flex;
     justify-content: center;
@@ -108,25 +165,64 @@
 
 .separador {
     font-size: 36px;
-    margin: 0 10px;
+    margin: 0 30px;
+    margin-top: 25px;
 }
 
-.submit-button, .download-button {
+.download-button{
     width: 100%;
     padding: 12px;
     margin-top: 10px;
     font-size: 16px;
     cursor: pointer;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #ffffff;
+    font-weight: bold;
+    color: #0068a9;
     border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    border-radius: 15px;
 }
 
-.submit-button:hover, .download-button:hover {
-    background-color: #45a049;
+.submit-button  {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #0068a9;
+    color: white;
+    font-weight: bold;
+    border: 4px solid white;
+    border-radius: 15px;
 }
+
+.download-button:hover{
+    background-color: #0068a9;
+    font-weight: bold;
+}
+.submit-button:hover {
+    background-color: #0068a9;
+    font-weight: bold;
+}
+
+.selected-team{
+    background-color: #ffffff;
+    color: #0068a9;
+    width: 100%;
+    border-radius: 15px;
+}
+
+.coach {
+    text-align: center;  
+    margin: 10px 0;     
+    width: 100%;
+}
+
+.coach p {
+    margin: 0;           
+    padding: 5px 0;  
+    font-weight: bold;    
+}
+
 
 @media (max-width: 768px) {
     .equipos-container {
@@ -141,3 +237,5 @@
         width: 90%;
     }
 }
+
+

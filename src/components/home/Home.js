@@ -79,7 +79,7 @@ const Home = () => {
                     <div key={partido.id} className="partido-item">
                       <div className="partido-info">
                         <span>{partido.equipoLocal.nombre}</span>
-                        <span> - </span>
+                        {/* <span> - </span> */}
                         <span>{partido.equipoVisitante.nombre}</span>
                       </div>
                     </div>
@@ -102,7 +102,7 @@ const Home = () => {
                     <div key={partido.id} className="partido-item">
                       <div className="partido-info">
                         <span>{partido.equipoLocal.nombre}</span>
-                        <span> - </span>
+                        {/* <span> - </span> */}
                         <span>{partido.equipoVisitante.nombre}</span>
                       </div>
                     </div>
@@ -125,7 +125,7 @@ const Home = () => {
                     <div key={partido.id} className="partido-item">
                       <div className="partido-info">
                         <span>{partido.equipoLocal.nombre}</span>
-                        <span> - </span>
+                        {/* <span> - </span> */}
                         <span>{partido.equipoVisitante.nombre}</span>
                       </div>
                     </div>

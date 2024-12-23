@@ -71,7 +71,7 @@
 .hora {
   text-align: center;
   font-weight: bold;
-  font-size: 1.1em;
+  font-size: 1.3em;
   color: #0068a9;
   min-width: 120px; /* Mínimo ancho para mantener la estructura fija */
 }
