@@ -22,7 +22,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 30%;
+    width: 33%;
     background-color: #76adcdbb;
     /* padding: 20px; */
     border-radius: 20px;
@@ -88,7 +88,7 @@
 }
 
 .equipo-section table th, .equipo-section table td {
-    padding: 8px;
+    padding: 7.9px;
     text-align: center;
     border: none;
     font-weight: bold;
@@ -114,7 +114,7 @@
 .counter-button {
     background-color: #0068a9;
     font-weight: bold;
-    color: #0068a9;
+    color: #ffffff;
     padding: 5px 10px;
     border: none;
     cursor: pointer;
@@ -221,6 +221,14 @@
     margin: 0;           
     padding: 5px 0;  
     font-weight: bold;    
+}
+
+.expulsiones-yellow {
+    background-color: rgba(255, 255, 0, 0.418);
+}
+
+.expulsiones-red {
+    background-color: rgba(255, 0, 0, 0.534);
 }
 
 

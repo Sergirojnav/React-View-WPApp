@@ -1,0 +1,67 @@
+.matches-container {
+    padding: 20px;
+    width: 20%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 50px;
+    justify-items: center;
+    align-items: stretch;
+}
+
+.match-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 250%;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.match-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.match-teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+.team-section {
+    flex: 1; /* Cada sección ocupa el mismo espacio */
+    text-align: center;
+}
+
+.team-name {
+    font-size: 1rem;
+    font-weight: bold;
+
+}
+
+.match-score {
+    font-size: 1.3rem;
+
+    color: #0064a6;
+    text-align: center;
+    flex: 1;
+}
+
+.match-details{
+    background-color: #0064a6;
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getPartidos } from '../services/partidoService';
-import MatchesList from './MatchesList';
+import MatchesList from './matchList/MatchesList';
 
 function MatchPage() {
     const [partidos, setPartidos] = useState([]);

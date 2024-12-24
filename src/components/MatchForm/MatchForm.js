@@ -22,23 +22,25 @@ const MatchForm = () => {
     const [entrenadorLocal, setEntrenadorLocal] = useState(null);
     const [entrenadorVisitante, setEntrenadorVisitante] = useState(null);
 
+    // Aquí manejamos la carga de equipos
     useEffect(() => {
         axios.get('http://localhost:8080/equipos')
             .then(response => setEquipos(response.data))
             .catch(error => console.error('Error fetching equipos:', error));
     }, []);
 
+    // Cargar jugadores y staff cuando se selecciona el equipo local
     useEffect(() => {
         if (equipoLocal) {
             axios.get(`http://localhost:8080/equipos/${equipoLocal}/jugadores`)
                 .then(response => setJugadoresLocal(response.data))
                 .catch(error => console.error('Error fetching jugadores local:', error));
-    
-            // Aquí corregimos la estructura de la API para obtener el entrenador directamente
+
+            // Obtener el entrenador del equipo local
             axios.get(`http://localhost:8080/equipos/${equipoLocal}/staff`)
                 .then(response => {
-                    const entrenador = response.data.find(person => person.rol === 'coach'); // Buscar entrenador con el rol 'coach'
-                    setEntrenadorLocal(entrenador || null); // Asignar el entrenador si existe
+                    const entrenador = response.data.find(person => person.rol === 'coach');
+                    setEntrenadorLocal(entrenador || null);
                 })
                 .catch(error => console.error('Error fetching entrenador local:', error));
         } else {
@@ -46,18 +48,19 @@ const MatchForm = () => {
             setEntrenadorLocal(null);
         }
     }, [equipoLocal]);
-    
+
+    // Cargar jugadores y staff cuando se selecciona el equipo visitante
     useEffect(() => {
         if (equipoVisitante) {
             axios.get(`http://localhost:8080/equipos/${equipoVisitante}/jugadores`)
                 .then(response => setJugadoresVisitante(response.data))
                 .catch(error => console.error('Error fetching jugadores visitante:', error));
-    
-            // Corregimos la misma lógica para el equipo visitante
+
+            // Obtener el entrenador del equipo visitante
             axios.get(`http://localhost:8080/equipos/${equipoVisitante}/staff`)
                 .then(response => {
-                    const entrenador = response.data.find(person => person.rol === 'coach'); // Buscar entrenador con el rol 'coach'
-                    setEntrenadorVisitante(entrenador || null); // Asignar el entrenador si existe
+                    const entrenador = response.data.find(person => person.rol === 'coach');
+                    setEntrenadorVisitante(entrenador || null);
                 })
                 .catch(error => console.error('Error fetching entrenador visitante:', error));
         } else {
@@ -66,6 +69,7 @@ const MatchForm = () => {
         }
     }, [equipoVisitante]);
 
+    // Función para manejar goles
     const handleGolesChange = (jugadorId, equipo, incremento) => {
         const updateGoles = equipo === 'local' ? { ...golesLocal } : { ...golesVisitante };
 
@@ -81,6 +85,7 @@ const MatchForm = () => {
         }
     };
 
+    // Función para manejar expulsiones
     const handleExpulsionesChange = (jugadorId, equipo, incremento) => {
         const updateExpulsiones = equipo === 'local' ? { ...expulsionesLocal } : { ...expulsionesVisitante };
         const limit = 3;
@@ -95,6 +100,7 @@ const MatchForm = () => {
         }
     };
 
+    // Función para manejar el submit del partido
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -125,6 +131,7 @@ const MatchForm = () => {
             .catch(error => console.error('Error saving match:', error));
     };
 
+    // Función para descargar los datos en formato Excel
     const handleDownloadExcel = () => {
         const fechaPartido = new Date().toISOString().split('T')[0];
 
@@ -160,18 +167,7 @@ const MatchForm = () => {
         XLSX.writeFile(wb, `partido_${fechaPartido}.xlsx`);
     };
 
-    const handleDropdownClickLocal = () => {
-        if (!equipoLocal) {
-            setShowDropdownLocal(!showDropdownLocal);
-        }
-    };
-
-    const handleDropdownClickVisitante = () => {
-        if (!equipoVisitante) {
-            setShowDropdownVisitante(!showDropdownVisitante);
-        }
-    };
-
+    // Función para manejar la selección de un equipo
     const handleSelectEquipo = (equipoId, equipo) => {
         if (equipo === 'local') {
             setEquipoLocal(equipoId);
@@ -184,42 +180,37 @@ const MatchForm = () => {
         }
     };
 
-    const handleRemoveEquipo = (equipo) => {
-        if (equipo === 'local') {
-            setEquipoLocal('');
-        } else {
-            setEquipoVisitante('');
-        }
-    };
-
-    const filteredEquiposLocal = equipos.filter(equipo => 
+    // Filtros de equipos para la búsqueda
+    const filteredEquiposLocal = equipos.filter(equipo =>
         equipo.nombre.toLowerCase().includes(searchLocal.toLowerCase())
     );
 
-    const filteredEquiposVisitante = equipos.filter(equipo => 
+    const filteredEquiposVisitante = equipos.filter(equipo =>
         equipo.nombre.toLowerCase().includes(searchVisitante.toLowerCase())
     );
 
     return (
         <div className="match-form-container">
+            {/* Renderizar el formulario para el equipo local y visitante */}
             <div className="equipos-container">
+                {/* Equipo Local */}
                 <div className="equipo-section">
                     {!equipoLocal ? (
                         <>
                             <div className="dropdown-container">
-                            <p>Equipo Local:</p>
-                                <input 
-                                    type="text" 
-                                    placeholder="Buscar equipo local..." 
-                                    value={searchLocal} 
-                                    onClick={handleDropdownClickLocal}
+                                <p>LOCAL TEAM:</p>
+                                <input
+                                    type="text"
+                                    placeholder="Buscar equipo local..."
+                                    value={searchLocal}
+                                    onClick={() => setShowDropdownLocal(!showDropdownLocal)}
                                     onChange={e => setSearchLocal(e.target.value)}
                                     className="search-input"
                                 />
                                 {showDropdownLocal && (
                                     <ul className="dropdown-list">
                                         {filteredEquiposLocal.map(equipo => (
-                                            <li 
+                                            <li
                                                 key={equipo.id}
                                                 onClick={() => handleSelectEquipo(equipo.id, 'local')}
                                                 className="dropdown-item"
@@ -234,20 +225,20 @@ const MatchForm = () => {
                     ) : (
                         <div className="selected-team">
                             <h4>{equipos.find(e => e.id === equipoLocal)?.nombre}</h4>
-                            <button className="remove-button" onClick={() => handleRemoveEquipo('local')}>X</button>
+                            <button className="remove-button" onClick={() => setEquipoLocal('')}>X</button>
                         </div>
                     )}
                     <div className="coach">
-                    <p>COACH</p>
-                    <p>{entrenadorLocal ? `${entrenadorLocal.nombre} ${entrenadorLocal.apellido}` : 'No disponible'}</p>
+                        <p>COACH</p>
+                        <p>{entrenadorLocal ? `${entrenadorLocal.nombre} ${entrenadorLocal.apellido}` : 'No disponible'}</p>
                     </div>
                     <table className="equipo-table">
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nombre</th>
-                                <th>Expulsiones</th>
-                                <th>Goles</th>
+                                <th>Player</th>
+                                <th>Exclusions</th>
+                                <th>Goals</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -255,7 +246,7 @@ const MatchForm = () => {
                                 <tr
                                     key={jugador.id}
                                     className={`jugador-row 
-                                        ${expulsionesLocal[jugador.id] >= 3 ? 'expulsiones-red' : 
+                                        ${expulsionesLocal[jugador.id] >= 3 ? 'expulsiones-red' :
                                         expulsionesLocal[jugador.id] === 2 ? 'expulsiones-yellow' : ''}`}
                                 >
                                     <td>{jugador.numeroGorro}</td>
@@ -280,6 +271,7 @@ const MatchForm = () => {
                     </table>
                 </div>
 
+                {/* Resultado y botones */}
                 <div className="resultados-container">
                     <div className="resultado-section">
                         <div className="marcador">
@@ -292,23 +284,24 @@ const MatchForm = () => {
                     <button className="submit-button" onClick={handleSubmit}>SAVE</button>
                 </div>
 
+                {/* Equipo Visitante */}
                 <div className="equipo-section">
                     {!equipoVisitante ? (
                         <>
                             <div className="dropdown-container">
-                            <p>Equipo Visitante:</p>
-                                <input 
-                                    type="text" 
-                                    placeholder="Search team..." 
-                                    value={searchVisitante} 
-                                    onClick={handleDropdownClickVisitante}
+                                <p>AWAY TEAM:</p>
+                                <input
+                                    type="text"
+                                    placeholder="Search team..."
+                                    value={searchVisitante}
+                                    onClick={() => setShowDropdownVisitante(!showDropdownVisitante)}
                                     onChange={e => setSearchVisitante(e.target.value)}
                                     className="search-input"
                                 />
                                 {showDropdownVisitante && (
                                     <ul className="dropdown-list">
                                         {filteredEquiposVisitante.map(equipo => (
-                                            <li 
+                                            <li
                                                 key={equipo.id}
                                                 onClick={() => handleSelectEquipo(equipo.id, 'visitante')}
                                                 className="dropdown-item"
@@ -323,21 +316,20 @@ const MatchForm = () => {
                     ) : (
                         <div className="selected-team">
                             <h4>{equipos.find(e => e.id === equipoVisitante)?.nombre}</h4>
-                            
-                            <button className="remove-button" onClick={() => handleRemoveEquipo('visitante')}>X</button>
+                            <button className="remove-button" onClick={() => setEquipoVisitante('')}>X</button>
                         </div>
                     )}
                     <div className="coach">
-                    <p>COACH</p>
-                    <p>{entrenadorVisitante ? `${entrenadorVisitante.nombre} ${entrenadorVisitante.apellido}` : 'No disponible'}</p>
+                        <p>COACH</p>
+                        <p>{entrenadorVisitante ? `${entrenadorVisitante.nombre} ${entrenadorVisitante.apellido}` : 'No disponible'}</p>
                     </div>
                     <table className="equipo-table">
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Nombre</th>
-                                <th>Expulsiones</th>
-                                <th>Goles</th>
+                                <th>Player</th>
+                                <th>Exclusions</th>
+                                <th>Goals</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -345,7 +337,7 @@ const MatchForm = () => {
                                 <tr
                                     key={jugador.id}
                                     className={`jugador-row 
-                                        ${expulsionesVisitante[jugador.id] >= 3 ? 'expulsiones-red' : 
+                                        ${expulsionesVisitante[jugador.id] >= 3 ? 'expulsiones-red' :
                                         expulsionesVisitante[jugador.id] === 2 ? 'expulsiones-yellow' : ''}`}
                                 >
                                     <td>{jugador.numeroGorro}</td>
