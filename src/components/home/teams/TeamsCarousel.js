@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Reemplazamos useHistory por useNavigate
 import './TeamsCarousel.css';
 import nextPrevImage from '../../../assets/images/next-prev.png';
 
 const TeamCarousel = () => {
   const [teams, setTeams] = useState([]); // Guardará los equipos de la base de datos
   const [activeIndex, setActiveIndex] = useState(0); // Indica cuál es el equipo central
+  const navigate = useNavigate(); // Inicializamos useNavigate
 
   useEffect(() => {
     // Llamada al endpoint para obtener los equipos
@@ -31,6 +33,11 @@ const TeamCarousel = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + teams.length) % teams.length);
   };
 
+  // Función para manejar el clic en un equipo
+  const handleTeamClick = (teamId) => {
+    navigate(`/team/${teamId}`); // Redirigir a la página del equipo
+  };
+
   return (
     <div className="carousel-container">
       {teams.length > 0 && (
@@ -46,6 +53,7 @@ const TeamCarousel = () => {
               <div
                 key={teams[teamIndex].id}
                 className={`carousel-item ${isActive ? 'active' : ''} ${isPrev || isNext ? 'side' : ''}`}
+                onClick={() => handleTeamClick(teams[teamIndex].id)} // Redirigir al hacer clic
               >
                 <div className="team-logo-container">
                   {/* Mostrar solo el escudo de los equipos */}
