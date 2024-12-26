@@ -1,0 +1,77 @@
+/* CSS específico para el formulario en línea */
+
+.create-match{
+    text-align: center;
+}
+
+.upload-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: #f4f4f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.upload-form .form-group {
+    display: flex;
+    flex-direction: column;
+    width: 15%; /* Cada campo tendrá el 15% del ancho */
+    margin-bottom: 6px;
+}
+
+.upload-form .form-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.upload-form .form-input,
+.upload-form .form-select {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.upload-form .submit-button {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    background-color: #0068a9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px; /* Para que el botón no quede en la misma fila */
+}
+
+.upload-form .submit-button:hover {
+    background-color: #02568a;
+}
+
+
+
+/* Asegurar que en pantallas pequeñas el formulario se ajuste */
+@media (max-width: 768px) {
+    .upload-form .form-group {
+        width: 48%; /* Ocupa el 48% en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    .upload-form .form-group {
+        width: 100%; /* Los campos ocuparán todo el ancho en pantallas muy pequeñas */
+    }
+
+    .upload-form .submit-button {
+        width: 100%; /* El botón también ocupa el 100% */
+    }
+}

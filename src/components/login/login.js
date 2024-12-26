@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./login.css";
@@ -11,11 +11,19 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  // Efecto para verificar si hay un token en el localStorage cuando la página se carga
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      navigate("/"); // Si ya hay un token, redirige al Home directamente
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = await login(username, password);
     if (success) {
-      navigate("/"); // Redirigir al Home
+      navigate("/"); // Redirigir al Home si el login es exitoso
     } else {
       setError("Credenciales incorrectas o error en el servidor");
     }

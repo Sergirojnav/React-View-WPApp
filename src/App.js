@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from './components/home/Home';
 import Navbar from './components/navbar/Navbar';
 import MatchForm from './components/MatchForm/MatchForm';
-import UploadExcel from './components/UploadExcel';
+import Upload from './components/upload/Upload';
 import MatchPage from './components/MatchPage';
 import Login from './components/login/login'; // Página de login
 import PrivateRoute from './components/PrivateRoute'; // Rutas protegidas
@@ -29,7 +29,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/match-form" element={<MatchForm />} />
-                  <Route path="/upload-excel" element={<UploadExcel />} />
+                  <Route path="/upload" element={<Upload />} />
                   <Route path="/all-matches" element={<MatchPage />} />
                 </Routes>
               </PrivateRoute>

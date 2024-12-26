@@ -106,7 +106,7 @@ const Home = () => {
                     <div
                       key={partido.id}
                       className="partido-item"
-                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)}
+                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
                     >
                       <div className="partido-info">
                         <span>{partido.equipoLocal.nombre}</span>
@@ -132,7 +132,7 @@ const Home = () => {
                     <div
                       key={partido.id}
                       className="partido-item"
-                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)}
+                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
                     >
                       <div className="partido-info">
                         <span>{partido.equipoLocal.nombre}</span>

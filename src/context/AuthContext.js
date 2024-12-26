@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';  // Cambia a la exportación correcta
+import { jwtDecode } from 'jwt-decode';
 
 // Crear contexto
 export const AuthContext = createContext();
@@ -13,11 +13,29 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
 
+  // Recuperar token de localStorage cuando la app carga
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   // Obtener nombre de usuario del token decodificado
   const getUsernameFromToken = () => {
     if (token) {
-      const decodedToken = jwtDecode(token); // Usamos jwtDecode
-      return decodedToken.sub; // Asumiendo que el nombre de usuario está en el 'sub' (sujeto) del token
+      const decodedToken = jwtDecode(token);
+      return decodedToken.sub;  // El nombre de usuario está en 'sub'
+    }
+    return null;
+  };
+
+  // Obtener el rol del usuario (en este caso, basado en 'sub')
+  const getRoleFromToken = () => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.sub;  // Usamos 'sub' como rol (en este caso, 'admin')
     }
     return null;
   };
@@ -30,11 +48,10 @@ export const AuthProvider = ({ children }) => {
         password,
       });
 
-      // Verificar si la API devuelve un token
       if (response.data && response.data.token) {
         setIsAuthenticated(true);
         setToken(response.data.token);
-        localStorage.setItem('token', response.data.token); // Guardar token en localStorage
+        localStorage.setItem('token', response.data.token);  // Guardar token en localStorage
         return true;
       }
     } catch (error) {
@@ -51,7 +68,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, token, getUsernameFromToken }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, token, getUsernameFromToken, getRoleFromToken }}>
       {children}
     </AuthContext.Provider>
   );
