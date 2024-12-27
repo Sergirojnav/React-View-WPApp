@@ -5,6 +5,7 @@ import Navbar from './components/navbar/Navbar';
 import MatchForm from './components/MatchForm/MatchForm';
 import Upload from './components/upload/Upload';
 import MatchPage from './components/MatchPage';
+import TopScorer from './components/topScorer/TopScorer';
 import Login from './components/login/login'; // Página de login
 import PrivateRoute from './components/PrivateRoute'; // Rutas protegidas
 import { AuthProvider } from './context/AuthContext'; // Contexto de autenticación
@@ -31,6 +32,7 @@ function App() {
                   <Route path="/match-form" element={<MatchForm />} />
                   <Route path="/upload" element={<Upload />} />
                   <Route path="/all-matches" element={<MatchPage />} />
+                  <Route path="/stats" element={<TopScorer />} />
                 </Routes>
               </PrivateRoute>
             }

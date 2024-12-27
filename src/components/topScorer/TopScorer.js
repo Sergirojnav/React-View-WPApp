@@ -1,94 +1,222 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
-import { faVolleyball } from '@fortawesome/free-solid-svg-icons';
-import profileDefault from '../../../assets/images/img_user_default.jpg';
 
 const TopScorer = () => {
-    const [topScorers, setTopScorers] = useState([]);
+  const [topScorers, setTopScorers] = useState([]);
 
-    useEffect(() => {
-        const fetchTopScorers = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/jugadores/top-scorers');
-                console.log('API Response:', response.data);
-                setTopScorers(response.data);
-            } catch (error) {
-                console.error('Error fetching top scorer data', error);
-            }
-        };
-
-        fetchTopScorers();
-    }, []);
-
-    const topFiveScorers = topScorers.slice(0, 3);
-
-    const openAllScorers = () => {
-        const newWindow = window.open('', '_blank');
-        newWindow.document.write('<html><head><title>Todos los Máximos Goleadores</title>');
-        newWindow.document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">');
-        newWindow.document.write('<style>');
-        newWindow.document.write(`
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            h1 { color: #333; }
-            .scorer-list { display: flex; flex-direction: column; gap: 10px; }
-            .scorer-card { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 8px; padding: 10px; width: 100%; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
-            .scorer-card img { width: 50px; height: 50px; border-radius: 50%; margin-right: 15px; }
-            .scorer-card-content { flex: 1; }
-            .scorer-card-content h4 { margin: 0 0 5px 0; font-size: 16px; }
-            .scorer-card-content p { margin: 2px 0; font-size: 14px; }
-        `);
-        newWindow.document.write('</style></head><body>');
-        newWindow.document.write('<h1>Todos los Máximos Goleadores</h1>');
-        newWindow.document.write('<div class="scorer-list">');
-
-        topScorers.forEach(scorer => {
-            const imageUrl = scorer.profileImageUrl || 'default-profile.png';
-            newWindow.document.write(`
-                <div class="scorer-card">
-                    <img src="${imageUrl}" alt="Foto de perfil">
-                    <div class="scorer-card-content">
-                        <h4>${scorer.nombre}</h4>
-                        <p><strong>Equipo:</strong> ${scorer.nombreEquipo}</p>
-                        <p><strong>Goles Totales:</strong> ${scorer.goles}</p>
-                    </div>
-                </div>
-            `);
-        });
-
-        newWindow.document.write('</div>');
-        newWindow.document.write('</body></html>');
-        newWindow.document.close();
+  useEffect(() => {
+    const fetchTopScorers = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/jugadores/top-scorers');
+        console.log('API Top Scorers:', response.data);
+        setTopScorers(response.data);
+      } catch (error) {
+        console.error('Error fetching top scorer data', error);
+      }
     };
 
-    return (
-        <div className="dashboard-card">
-            <h2>Top Scorer</h2>
-            {topFiveScorers.length > 0 ? (
-                <div className="scorer-list">
-                    {topFiveScorers.map((scorer, index) => {
-                        // Usar imagen por defecto si `profileImageUrl` está ausente o vacío
-                        const imageUrl = scorer.profileImageUrl || profileDefault;
-                        return (
-                            <div key={index} className="scorer-card">
-                                <img src={imageUrl} alt="Foto de perfil" />
-                                <div className="scorer-card-content">
-                                    <h4>{scorer.nombre}</h4>
-                                    <p><strong>Equipo:</strong> {scorer.nombreEquipo}</p>
-                                    <p><strong>Goles Totales:</strong> {scorer.goles}</p>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            ) : (
-                <p>No players available...</p>
-            )}
-            {topScorers.length > 3 && (
-                <button className="view-more-button" onClick={openAllScorers}>View More</button>
-            )}
-        </div>
-    );
+    fetchTopScorers();
+  }, []);
+
+  // Mostrar en pantalla solo los primeros 15
+  const topFifteenScorers = topScorers.slice(0, 15);
+
+  // Al hacer click en "Ver todo el listado", abrir otra ventana con hasta 30
+  const openAllScorers = () => {
+    const newWindow = window.open('', '_blank');
+    newWindow.document.write(`
+      <html>
+        <head>
+          <title>Listado Completo de Goleadores</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 20px;
+              margin: 0;
+              background-color: #f0f8ff; /* Azul muy claro */
+            }
+
+            h1 {
+              color: #005f9e; /* Azul intermedio */
+              text-align: center;
+              margin-bottom: 20px;
+            }
+
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 20px;
+              background-color: rgba(255, 255, 255, 0.7); /* Blanco con transparencia */
+              border-radius: 10px; /* Bordes redondeados */
+              overflow: hidden; /* Para que los bordes redondeados afecten a las celdas */
+            }
+
+            thead {
+              background-color: #e6f2fa; /* Azul clarito */
+            }
+
+            th, td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: center;
+              color: #005f9e; /* Texto azul */
+            }
+
+            th {
+              background-color: #e6f2fa; /* Azul clarito */
+              color: #005f9e; /* Texto azul */
+            }
+
+            tr:nth-child(even) {
+              background-color: rgba(255, 255, 255, 0.5);
+            }
+          </style>
+        </head>
+        <body>
+          <h1>LISTADO COMPLETO DE GOLEADORES</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Jugador</th>
+                <th>Equipo</th>
+                <th>Goles</th>
+                <th>Partidos</th>
+                <th>Expulsiones</th>
+              </tr>
+            </thead>
+            <tbody>
+    `);
+
+    // hasta 30
+    const topThirtyScorers = topScorers.slice(0, 30);
+    topThirtyScorers.forEach((scorer, index) => {
+      newWindow.document.write(`
+        <tr>
+          <td>${index + 1}</td>
+          <td>${scorer.jugadorNombre}</td>
+          <td>${scorer.equipoNombre}</td>
+          <td>${scorer.totalGoles}</td>
+          <td>${scorer.partidosJugados}</td>
+          <td>${scorer.totalExpulsiones}</td>
+        </tr>
+      `);
+    });
+
+    newWindow.document.write(`
+            </tbody>
+          </table>
+        </body>
+      </html>
+    `);
+
+    newWindow.document.close();
+  };
+
+  return (
+    <div
+      className="dashboard-card"
+      style={{
+        padding: '20px',
+        textAlign: 'center'
+     
+      }}
+    >
+      <h2 style={{ textTransform: 'uppercase', color: '#ffffff' }}>
+        Top Scorers
+      </h2>
+
+      {topScorers.length === 0 ? (
+        <p style={{ color: '#005f9e' }}>No hay jugadores disponibles...</p>
+      ) : (
+        <>
+          {/* Tabla con los primeros 15 */}
+          <table
+            className="top-scorers-table"
+            style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              margin: '0 auto',
+              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              borderRadius: '10px',
+              overflow: 'hidden',
+            }}
+          >
+            <thead
+              style={{
+                backgroundColor: '#e6f2fa',
+              }}
+            >
+              <tr>
+                <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
+                  Rank
+                </th>
+                <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
+                  Jugador
+                </th>
+                <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
+                  Equipo
+                </th>
+                <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
+                  Goles
+                </th>
+                <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
+                  Partidos
+                </th>
+                <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
+                  Expulsiones
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {topFifteenScorers.map((scorer, index) => (
+                <tr key={index}>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
+                    {index + 1}
+                  </td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
+                    {scorer.jugadorNombre}
+                  </td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
+                    {scorer.equipoNombre}
+                  </td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
+                    {scorer.totalGoles}
+                  </td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
+                    {scorer.partidosJugados}
+                  </td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
+                    {scorer.totalExpulsiones}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Si hay más de 15, botón para verlos todos en otra pestaña */}
+          {topScorers.length > 15 && (
+            <button
+              className="view-more-button"
+              style={{
+                marginTop: '20px',
+                padding: '10px 20px',
+                backgroundColor: '#005f9e',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '5px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+              }}
+              onClick={openAllScorers}
+            >
+              VER TODO EL LISTADO
+            </button>
+          )}
+        </>
+      )}
+    </div>
+  );
 };
 
 export default TopScorer;
