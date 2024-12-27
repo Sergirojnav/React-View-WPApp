@@ -37,9 +37,10 @@ function App() {
                   <Route path="/" element={<TeamCarousel />} />
                   <Route path="/team/:teamId" element={<TeamDetails />} />
                   <Route path="/stats" element={<TopScorer />} />
-                </Routes>
+                </Routes> 
               </PrivateRoute>
             }
+            
           />
           {/* Si el usuario intenta acceder a una ruta desconocida */}
           <Route path="*" element={<Navigate to="/login" />} />
