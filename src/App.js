@@ -8,6 +8,7 @@ import MatchPage from './components/MatchPage';
 import TeamCarousel from './components/home/teams/TeamsCarousel'; // Carrusel de equipos
 import TeamDetails from './components/home/teams/TeamsDetails';
 import Login from './components/login/login'; // Página de login
+import TopScorer from './components/topScorer/TopScorer';
 import PrivateRoute from './components/PrivateRoute'; // Rutas protegidas
 import { AuthProvider } from './context/AuthContext'; // Contexto de autenticación
 import './assets/styles.css'; // Estilos globales
@@ -35,6 +36,7 @@ function App() {
                   <Route path="/all-matches" element={<MatchPage />} />
                   <Route path="/" element={<TeamCarousel />} />
                   <Route path="/team/:teamId" element={<TeamDetails />} />
+                  <Route path="/stats" element={<TopScorer />} />
                 </Routes>
               </PrivateRoute>
             }
