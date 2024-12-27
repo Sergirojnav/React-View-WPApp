@@ -9,7 +9,7 @@ function MatchesList({ partidos }) {
         // Llamada para obtener las actas relacionadas con los partidos
         const fetchActas = async () => {
             try {
-                const response = await fetch('http://localhost:8080/actas'); // Endpoint para obtener actas
+                const response = await fetch('http://192.168.1.54:8080/actas'); // Endpoint para obtener actas
                 const data = await response.json();
                 console.log('Actas obtenidas:', data); // Verifica que se obtienen las actas
                 setActas(data);

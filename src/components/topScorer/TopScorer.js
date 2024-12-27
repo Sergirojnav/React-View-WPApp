@@ -7,7 +7,7 @@ const TopScorer = () => {
   useEffect(() => {
     const fetchTopScorers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/jugadores/top-scorers');
+        const response = await axios.get('http://192.168.1.54:8080/jugadores/top-scorers');
         console.log('API Top Scorers:', response.data);
         setTopScorers(response.data);
       } catch (error) {

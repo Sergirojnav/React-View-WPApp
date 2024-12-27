@@ -11,7 +11,7 @@ const TeamDetails = () => {
     // Llamada para obtener los detalles del equipo
     const fetchTeam = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/equipos/${teamId}`);
+        const response = await fetch(`http://192.168.1.54:8080/equipos/${teamId}`);
         const data = await response.json();
         setTeam(data);
       } catch (error) {

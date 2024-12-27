@@ -12,7 +12,7 @@ const TeamCarousel = () => {
     // Llamada al endpoint para obtener los equipos
     const fetchTeams = async () => {
       try {
-        const response = await fetch('http://localhost:8080/equipos'); // Endpoint para obtener equipos
+        const response = await fetch('http://192.168.1.54:8080/equipos'); // Endpoint para obtener equipos
         const data = await response.json();
         setTeams(data);
       } catch (error) {

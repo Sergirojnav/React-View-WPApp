@@ -39,7 +39,7 @@ const Upload = () => {
     useEffect(() => {
         const fetchEquipos = async () => {
             try {
-                const response = await fetch("http://localhost:8080/equipos"); // Endpoint para obtener equipos
+                const response = await fetch("http://192.168.1.54:8080/equipos"); // Endpoint para obtener equipos
                 if (!response.ok) {
                     throw new Error("Error al obtener la lista de equipos");
                 }
@@ -67,7 +67,7 @@ const Upload = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/partidos/crear", {
+            const response = await fetch("http://192.168.1.54:8080/partidos/crear", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -100,7 +100,7 @@ const Upload = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:8080/api/auth/crear", {
+            const response = await fetch("http://192.168.1.54:8080/api/auth/crear", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -141,7 +141,7 @@ const Upload = () => {
         formData.append("entrenador", JSON.stringify(entrenadorData));
 
         try {
-            const response = await fetch("http://localhost:8080/equipos/crear", {
+            const response = await fetch("http://192.168.1.54:8080/equipos/crear", {
                 method: "POST",
                 body: formData,
             });

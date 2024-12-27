@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx'; // Importar la biblioteca xlsx
+import { jsPDF } from 'jspdf'; //libreria pdf
+import 'jspdf-autotable';
 import './MatchForm.css';
+
+import logo from '../../assets/images/bwmf.png';
+import wallpaper from '../../assets/images/form-wallpaper.png';
 
 const MatchForm = () => {
     const [equipos, setEquipos] = useState([]);
@@ -24,7 +29,7 @@ const MatchForm = () => {
 
     // Aquí manejamos la carga de equipos
     useEffect(() => {
-        axios.get('http://localhost:8080/equipos')
+        axios.get('http://192.168.1.54:8080/equipos')
             .then(response => setEquipos(response.data))
             .catch(error => console.error('Error fetching equipos:', error));
     }, []);
@@ -32,12 +37,12 @@ const MatchForm = () => {
     // Cargar jugadores y staff cuando se selecciona el equipo local
     useEffect(() => {
         if (equipoLocal) {
-            axios.get(`http://localhost:8080/equipos/${equipoLocal}/jugadores`)
+            axios.get(`http://192.168.1.54:8080/equipos/${equipoLocal}/jugadores`)
                 .then(response => setJugadoresLocal(response.data))
                 .catch(error => console.error('Error fetching jugadores local:', error));
 
             // Obtener el entrenador del equipo local
-            axios.get(`http://localhost:8080/equipos/${equipoLocal}/staff`)
+            axios.get(`http://192.168.1.54:8080/equipos/${equipoLocal}/staff`)
                 .then(response => {
                     const entrenador = response.data.find(person => person.rol === 'coach');
                     setEntrenadorLocal(entrenador || null);
@@ -52,12 +57,12 @@ const MatchForm = () => {
     // Cargar jugadores y staff cuando se selecciona el equipo visitante
     useEffect(() => {
         if (equipoVisitante) {
-            axios.get(`http://localhost:8080/equipos/${equipoVisitante}/jugadores`)
+            axios.get(`http://192.168.1.54:8080/equipos/${equipoVisitante}/jugadores`)
                 .then(response => setJugadoresVisitante(response.data))
                 .catch(error => console.error('Error fetching jugadores visitante:', error));
 
             // Obtener el entrenador del equipo visitante
-            axios.get(`http://localhost:8080/equipos/${equipoVisitante}/staff`)
+            axios.get(`http://192.168.1.54:8080/equipos/${equipoVisitante}/staff`)
                 .then(response => {
                     const entrenador = response.data.find(person => person.rol === 'coach');
                     setEntrenadorVisitante(entrenador || null);
@@ -126,46 +131,221 @@ const MatchForm = () => {
             ]
         };
 
-        axios.post('http://localhost:8080/partidos/guardar', matchData)
+        axios.post('http://192.168.1.54:8080/partidos/guardar', matchData)
             .then(response => alert('Partido guardado exitosamente'))
             .catch(error => console.error('Error saving match:', error));
     };
 
-    // Función para descargar los datos en formato Excel
-    const handleDownloadExcel = () => {
+    // Funcion para descargar Acta en pdf
+    const handleDownloadPDF = () => {
         const fechaPartido = new Date().toISOString().split('T')[0];
-
-        const dataLocal = jugadoresLocal.map(jugador => ({
-            Equipo: equipos.find(e => e.id === equipoLocal)?.nombre || 'Equipo Local',
-            Nombre: jugador.nombre,
-            NumeroGorro: jugador.numeroGorro,
-            Goles: golesLocal[jugador.id] || 0,
-            Expulsiones: expulsionesLocal[jugador.id] || 0,
-            Resultado: resultadoLocal // Añadir el resultado local
-        }));
-
-        const dataVisitante = jugadoresVisitante.map(jugador => ({
-            Equipo: equipos.find(e => e.id === equipoVisitante)?.nombre || 'Equipo Visitante',
-            Nombre: jugador.nombre,
-            NumeroGorro: jugador.numeroGorro,
-            Goles: golesVisitante[jugador.id] || 0,
-            Expulsiones: expulsionesVisitante[jugador.id] || 0,
-            Resultado: resultadoVisitante // Añadir el resultado visitante
-        }));
-
-        const combinedData = [
-            { Equipo: 'Equipo', Nombre: 'Nombre', NumeroGorro: 'Número de Gorro', Goles: 'Goles', Expulsiones: 'Expulsiones', Resultado: 'Resultado' },
-            ...dataLocal,
-            ...dataVisitante
-        ];
-
-        const ws = XLSX.utils.json_to_sheet(combinedData, { skipHeader: true });
-
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Partido');
-
-        XLSX.writeFile(wb, `partido_${fechaPartido}.xlsx`);
-    };
+        const nombreLocal =
+          equipos.find(e => e.id === equipoLocal)?.nombre || 'Equipo A';
+        const nombreVisitante =
+          equipos.find(e => e.id === equipoVisitante)?.nombre || 'Equipo B';
+    
+        const nombreEntrenadorLocal = entrenadorLocal
+          ? `${entrenadorLocal.nombre} ${entrenadorLocal.apellido}`
+          : 'Not found';
+        const nombreEntrenadorVisitante = entrenadorVisitante
+          ? `${entrenadorVisitante.nombre} ${entrenadorVisitante.apellido}`
+          : 'Not found';
+    
+        // Cabeceras y data
+        const headColumns = [['Gorro', 'Jugador', 'Goles', 'Expulsiones']];
+        const bodyLocal = jugadoresLocal.map(jug => [
+          jug.numeroGorro,
+          jug.nombre,
+          golesLocal[jug.id] || 0,
+          expulsionesLocal[jug.id] || 0
+        ]);
+        const bodyVisit = jugadoresVisitante.map(jug => [
+          jug.numeroGorro,
+          jug.nombre,
+          golesVisitante[jug.id] || 0,
+          expulsionesVisitante[jug.id] || 0
+        ]);
+    
+        // Crear PDF
+        const doc = new jsPDF({
+          orientation: 'landscape',
+          unit: 'px',
+          format: 'a4'
+        });
+    
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+    
+        // Fondo + logos
+        doc.addImage(wallpaper, 'PNG', 0, 0, pageWidth, pageHeight);
+        doc.addImage(logo, 'PNG', 20, 15, 50, 50);
+        doc.addImage(logo, 'PNG', pageWidth - 70, 15, 50, 50);
+    
+        //   Título en blanco
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(255, 255, 255);  // BLANCO
+        doc.text(
+          `ACTA PARTIDO ${nombreLocal} VS ${nombreVisitante}`,
+          pageWidth / 2,
+          50,
+          { align: 'center' }
+        );
+    
+        // Ajustes para las tablas
+        const tableWidth = 240; // ancho mayor
+        const leftMarginLocal = 30;
+        const leftMarginVisit = pageWidth - tableWidth - 30;
+        const startY = 100;
+    
+        //  NOMBRE DEL EQUIPO LOCAL
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(255, 255, 255); 
+        doc.text(nombreLocal, leftMarginLocal, startY);
+    
+        doc.setTextColor(0, 0, 0);
+    
+        // Tabla local
+        doc.autoTable({
+          startY: startY + 10,
+          tableWidth,
+          margin: { left: leftMarginLocal },
+          head: headColumns,
+          body: bodyLocal,
+          theme: 'grid',
+          styles: {
+            cellPadding: 2,
+            lineWidth: 0.3
+          },
+          headStyles: {
+            fillColor: [0, 0, 0],
+            textColor: [255, 255, 255],
+            halign: 'center'
+          },
+          bodyStyles: {
+            halign: 'center'
+          },
+          columnStyles: {
+            0: { cellWidth: 35 },
+            1: { cellWidth: 105 },
+            2: { cellWidth: 40 },
+            3: { cellWidth: 60 }
+          },
+          didParseCell: data => {
+            // Pintar expulsiones=3 en rojo
+            if (data.section === 'body' && data.column.index === 3) {
+              const val = Number(data.cell.raw);
+              if (val === 3) {
+                data.cell.styles.fillColor = [255, 0, 0];
+                data.cell.styles.textColor = [255, 255, 255];
+              }
+            }
+          }
+        });
+    
+        const localTableEndY = doc.lastAutoTable.finalY;
+    
+        // Entrenador local en BLANCO
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(255, 255, 255);  // blanco
+        doc.text(
+          `Entrenador: ${nombreEntrenadorLocal}`,
+          leftMarginLocal,
+          localTableEndY + 15
+        );
+    
+        //  NOMBRE EQUIPO VISITANTE
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(255, 255, 255); 
+        doc.text(nombreVisitante, leftMarginVisit, startY);
+    
+        // Tabla en negro
+        doc.setTextColor(0, 0, 0);
+    
+        doc.autoTable({
+          startY: startY + 10,
+          tableWidth,
+          margin: { left: leftMarginVisit },
+          head: headColumns,
+          body: bodyVisit,
+          theme: 'grid',
+          styles: {
+            cellPadding: 2,
+            lineWidth: 0.3
+          },
+          headStyles: {
+            fillColor: [0, 0, 0],
+            textColor: [255, 255, 255],
+            halign: 'center'
+          },
+          bodyStyles: {
+            halign: 'center'
+          },
+          columnStyles: {
+            0: { cellWidth: 35 },
+            1: { cellWidth: 105 },
+            2: { cellWidth: 40 },
+            3: { cellWidth: 60 }
+          },
+          didParseCell: data => {
+            if (data.section === 'body' && data.column.index === 3) {
+              const val = Number(data.cell.raw);
+              if (val === 3) {
+                data.cell.styles.fillColor = [255, 0, 0];
+                data.cell.styles.textColor = [255, 255, 255];
+              }
+            }
+          }
+        });
+    
+        const visitTableEndY = doc.lastAutoTable.finalY;
+        // Entrenador visitante en BLANCO
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(255, 255, 255);
+        doc.text(
+          `Entrenador: ${nombreEntrenadorVisitante}`,
+          leftMarginVisit,
+          visitTableEndY + 15
+        );
+    
+        //  RESULTADO Y GANADOR
+        const maxEndY = Math.max(localTableEndY, visitTableEndY);
+        const resultStartY = maxEndY + 60;
+    
+        doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(255, 255, 255);  // blanco
+        doc.text('RESULTADO', pageWidth / 2, resultStartY, { align: 'center' });
+    
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'normal');
+        doc.text(
+          `${resultadoLocal} - ${resultadoVisitante}`,
+          pageWidth / 2,
+          resultStartY + 20,
+          { align: 'center' }
+        );
+    
+        let ganador = 'Empate';
+        if (resultadoLocal > resultadoVisitante) ganador = nombreLocal;
+        if (resultadoLocal < resultadoVisitante) ganador = nombreVisitante;
+    
+        doc.text(
+          `GANADOR: ${ganador}`,
+          pageWidth / 2,
+          resultStartY + 40,
+          { align: 'center' }
+        );
+    
+        // Guardar
+        const safeLocal = nombreLocal.replace(/\s+/g, '_');
+        const safeVisit = nombreVisitante.replace(/\s+/g, '_');
+        doc.save(`partido_${fechaPartido}_${safeLocal}_vs_${safeVisit}_bwmf.pdf`);
+      };
 
     // Función para manejar la selección de un equipo
     const handleSelectEquipo = (equipoId, equipo) => {
@@ -230,7 +410,7 @@ const MatchForm = () => {
                     )}
                     <div className="coach">
                         <p>COACH</p>
-                        <p>{entrenadorLocal ? `${entrenadorLocal.nombre} ${entrenadorLocal.apellido}` : 'No disponible'}</p>
+                        <p>{entrenadorLocal ? `${entrenadorLocal.nombre} ${entrenadorLocal.apellido}` : 'Not found'}</p>
                     </div>
                     <table className="equipo-table">
                         <thead>
@@ -280,7 +460,7 @@ const MatchForm = () => {
                             <p>{resultadoVisitante}</p>
                         </div>
                     </div>
-                    <button className="download-button" onClick={handleDownloadExcel}>DOWNLOAD</button>
+                    <button className="download-button" onClick={handleDownloadPDF}>DOWNLOAD</button>
                     <button className="submit-button" onClick={handleSubmit}>SAVE</button>
                 </div>
 
@@ -321,7 +501,7 @@ const MatchForm = () => {
                     )}
                     <div className="coach">
                         <p>COACH</p>
-                        <p>{entrenadorVisitante ? `${entrenadorVisitante.nombre} ${entrenadorVisitante.apellido}` : 'No disponible'}</p>
+                        <p>{entrenadorVisitante ? `${entrenadorVisitante.nombre} ${entrenadorVisitante.apellido}` : 'Not found'}</p>
                     </div>
                     <table className="equipo-table">
                         <thead>
