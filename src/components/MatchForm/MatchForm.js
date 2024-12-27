@@ -201,7 +201,7 @@ const MatchForm = () => {
                                 <p>LOCAL TEAM:</p>
                                 <input
                                     type="text"
-                                    placeholder="Buscar equipo local..."
+                                    placeholder="Search team..."
                                     value={searchLocal}
                                     onClick={() => setShowDropdownLocal(!showDropdownLocal)}
                                     onChange={e => setSearchLocal(e.target.value)}

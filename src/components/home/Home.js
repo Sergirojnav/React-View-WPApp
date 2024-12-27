@@ -1,15 +1,18 @@
+// Home.js
 import React, { useEffect, useState } from 'react';
 import './Home.css';
 import TeamCarousel from '../home/teams/TeamsCarousel';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import Loading from '../../components/loading/Loading';
+
 
 const Home = () => {
   const [partidos27, setPartidos27] = useState([]);
   const [partidos28, setPartidos28] = useState([]);
   const [partidos29, setPartidos29] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null);
-
+  const [loading, setLoading] = useState(true); // Estado de carga
   const navigate = useNavigate(); // Hook de navegación
 
   useEffect(() => {
@@ -23,8 +26,14 @@ const Home = () => {
 
         const response29 = await axios.get('http://localhost:8080/partidos/por-fecha?fecha=2024-12-29');
         setPartidos29(response29.data);
+
+      // Mostrar la pantalla de carga por 0.3 segundos
+      setTimeout(() => {
+        setLoading(false); // Desactivar el estado de carga después de 0.3 segundos
+      }, 300);
       } catch (error) {
         console.error('Error fetching partidos:', error);
+        setLoading(false); // En caso de error, desactiva la carga
       }
     };
 
@@ -67,86 +76,89 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <div className="card-container">
-        <h2>MATCHES</h2>
-        <div className="card" onClick={() => handleCardToggle('2024-12-27')}>
-          <p>27th DECEMBER 2024</p>
-          {expandedCard === '2024-12-27' && (
-            <div className="partidos-details">
-              {Object.keys(partidosAgrupados27).map((hora) => (
-                <div key={hora}>
-                  <div className="hora">{hora}</div>
-                  {partidosAgrupados27[hora].map((partido) => (
-                    <div
-                      key={partido.id}
-                      className="partido-item"
-                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
-                    >
-                      <div className="partido-info">
-                        <span>{partido.equipoLocal.nombre}</span>
-                        {/* <span> - </span> */}
-                        <span>{partido.equipoVisitante.nombre}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+      {/* Si estamos cargando, mostramos la pantalla de carga */}
+      {loading && <Loading />}
 
-        <div className="card" onClick={() => handleCardToggle('2024-12-28')}>
-          <p>28th DECEMBER 2024</p>
-          {expandedCard === '2024-12-28' && (
-            <div className="partidos-details">
-              {Object.keys(partidosAgrupados28).map((hora) => (
-                <div key={hora}>
-                  <div className="hora">{hora}</div>
-                  {partidosAgrupados28[hora].map((partido) => (
-                    <div
-                      key={partido.id}
-                      className="partido-item"
-                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
-                    >
-                      <div className="partido-info">
-                        <span>{partido.equipoLocal.nombre}</span>
-                        {/* <span> - </span> */}
-                        <span>{partido.equipoVisitante.nombre}</span>
+      {/* Si no estamos cargando, mostramos los partidos */}
+      {!loading && (
+        <div className="card-container">
+          <h2>MATCHES</h2>
+          <div className="card" onClick={() => handleCardToggle('2024-12-27')}>
+            <p>27th DECEMBER 2024</p>
+            {expandedCard === '2024-12-27' && (
+              <div className="partidos-details">
+                {Object.keys(partidosAgrupados27).map((hora) => (
+                  <div key={hora}>
+                    <div className="hora">{hora}</div>
+                    {partidosAgrupados27[hora].map((partido) => (
+                      <div
+                        key={partido.id}
+                        className="partido-item"
+                        onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
+                      >
+                        <div className="partido-info">
+                          <span>{partido.equipoLocal.nombre}</span>
+                          <span>{partido.equipoVisitante.nombre}</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-        <div className="card" onClick={() => handleCardToggle('2024-12-29')}>
-          <p>29th DECEMBER 2024</p>
-          {expandedCard === '2024-12-29' && (
-            <div className="partidos-details">
-              {Object.keys(partidosAgrupados29).map((hora) => (
-                <div key={hora}>
-                  <div className="hora">{hora}</div>
-                  {partidosAgrupados29[hora].map((partido) => (
-                    <div
-                      key={partido.id}
-                      className="partido-item"
-                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
-                    >
-                      <div className="partido-info">
-                        <span>{partido.equipoLocal.nombre}</span>
-                        {/* <span> - </span> */}
-                        <span>{partido.equipoVisitante.nombre}</span>
+          <div className="card" onClick={() => handleCardToggle('2024-12-28')}>
+            <p>28th DECEMBER 2024</p>
+            {expandedCard === '2024-12-28' && (
+              <div className="partidos-details">
+                {Object.keys(partidosAgrupados28).map((hora) => (
+                  <div key={hora}>
+                    <div className="hora">{hora}</div>
+                    {partidosAgrupados28[hora].map((partido) => (
+                      <div
+                        key={partido.id}
+                        className="partido-item"
+                        onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
+                      >
+                        <div className="partido-info">
+                          <span>{partido.equipoLocal.nombre}</span>
+                          <span>{partido.equipoVisitante.nombre}</span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="card" onClick={() => handleCardToggle('2024-12-29')}>
+            <p>29th DECEMBER 2024</p>
+            {expandedCard === '2024-12-29' && (
+              <div className="partidos-details">
+                {Object.keys(partidosAgrupados29).map((hora) => (
+                  <div key={hora}>
+                    <div className="hora">{hora}</div>
+                    {partidosAgrupados29[hora].map((partido) => (
+                      <div
+                        key={partido.id}
+                        className="partido-item"
+                        onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
+                      >
+                        <div className="partido-info">
+                          <span>{partido.equipoLocal.nombre}</span>
+                          <span>{partido.equipoVisitante.nombre}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="carousel-section">
         <TeamCarousel />

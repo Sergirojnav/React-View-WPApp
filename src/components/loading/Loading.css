@@ -1,0 +1,38 @@
+/* LoadingScreen.css */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../assets/images/app-wallpaper.png");
+    background-size: cover; /* Hace que la imagen rellene todo el contenedor */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que la pantalla de carga esté por encima de todo */
+    flex-direction: column;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3; /* Fondo gris claro */
+    border-top: 8px solid #013150; /* Color de la "rueda" */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite; /* Animación para girar */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Opcionalmente, puedes personalizar el mensaje de "Cargando..." */
+.loading-screen p {
+    font-size: 18px;
+    color: #3498db;
+    margin-top: 10px;
+}

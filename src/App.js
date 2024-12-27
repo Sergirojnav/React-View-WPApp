@@ -33,8 +33,8 @@ function App() {
                   <Route path="/match-form" element={<MatchForm />} />
                   <Route path="/upload" element={<Upload />} />
                   <Route path="/all-matches" element={<MatchPage />} />
-                  <Route path="/team" exact component={TeamCarousel} /> {/* Página principal */}
-                  <Route path="/team/:teamId" exact component={TeamDetails} /> {/* Página de detalles del equipo */}
+                  <Route path="/" element={<TeamCarousel />} />
+                  <Route path="/team/:teamId" element={<TeamDetails />} />
                 </Routes>
               </PrivateRoute>
             }

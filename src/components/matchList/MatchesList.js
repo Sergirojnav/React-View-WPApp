@@ -38,37 +38,47 @@ function MatchesList({ partidos }) {
                     >
                         <div className="match-teams">
                             <div className="team-section team-local">
-                                <span className="team-name">{partido.equipoLocal}</span>
+                                <span className="team-name-list">{partido.equipoLocal}</span>
                             </div>
                             <div className="team-section match-score">
                                 <span>{partido.resultadoLocal} - {partido.resultadoVisitante}</span>
                             </div>
                             <div className="team-section team-visitor">
-                                <span className="team-name">{partido.equipoVisitante}</span>
+                                <span className="team-name-list">{partido.equipoVisitante}</span>
                             </div>
                         </div>
 
                         {/* Desplegar detalles del partido solo si el partido está expandido */}
                         {expandedMatch === partido.idPartido && (
                             <div className="match-details">
-                                <h3>Detalles del Partido</h3>
-                                <ul>
-                                    {/* Filtramos las actas que coinciden con el id del partido */}
-                                    {actas
-                                        .filter((acta) => acta.partido.id === partido.idPartido) // Asegúrate de que el id de partido coincida
-                                        .map((acta) => (
-                                            <li key={acta.idActa}>
-                                                <p><strong>Goles:</strong> {acta.goles}</p>
-                                                <p><strong>Expulsiones:</strong> {acta.expulsiones}</p>
-                                                <p><strong>Jugador ID:</strong> {acta.jugador.id}</p>
-                                                <p><strong>Jugador Nombre:</strong> {acta.jugador.nombre}</p>
-                                            </li>
-                                        ))}
-                                    {/* Si no hay detalles, mostramos un mensaje */}
-                                    {actas.filter((acta) => acta.partido.id === partido.idPartido).length === 0 && (
-                                        <p>No details available for this match.</p>
-                                    )}
-                                </ul>
+                                <h3>MATCH DETAILS</h3>
+                                {/* Mostrar detalles en una tabla */}
+                                <table className="match-details-table">
+                                    <thead>
+                                        <tr>
+                                            <th>PLAYER</th>
+                                            <th>GOALS</th>
+                                            <th>EXCLUSIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {actas
+                                            .filter((acta) => acta.partido.id === partido.idPartido) // Filtramos las actas para el partido
+                                            .map((acta) => {
+                                                return (
+                                                    <tr key={acta.idActa}>
+                                                        <td>{acta.jugador.nombre}</td>
+                                                        <td>{acta.goles}</td>
+                                                        <td>{acta.expulsiones}</td>
+                                                    </tr>
+                                                );
+                                            })}
+                                    </tbody>
+                                </table>
+                                {/* Si no hay detalles, mostramos un mensaje */}
+                                {actas.filter((acta) => acta.partido.id === partido.idPartido).length === 0 && (
+                                    <p>No details available for this match.</p>
+                                )}
                             </div>
                         )}
                     </div>
