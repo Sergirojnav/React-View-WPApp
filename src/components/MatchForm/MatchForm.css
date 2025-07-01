@@ -6,7 +6,7 @@
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-attachment: fixed; /* Hace que el fondo se quede fijo */
     font-family: 'Montserrat';
-    min-height: 90vh; /* Asegura que el fondo cubra toda la altura de la ventana */
+    min-height: 100vh; /* Asegura que el fondo cubra toda la altura de la ventana */
 }
 
 .equipos-container {
@@ -22,7 +22,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    width: 33%;
+    width: 35%;
     background-color: #76adcdbb;
     /* padding: 20px; */
     border-radius: 20px;
@@ -39,7 +39,7 @@
     border-radius: 15px;
     justify-content: space-between;
     padding: 15px 20px;
-    width: 93%;
+    width: 94%;
 }
 
 .dropdown-container input{
@@ -130,7 +130,7 @@
 }
 
 .resultados-container {
-    width: 300px;
+    width: 230px;
     height: 100px;
     background-color: #f8f8f8;
     font-weight: bold;
@@ -140,6 +140,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 90px;
 }
 
 .marcador{
@@ -233,17 +234,118 @@
 
 
 @media (max-width: 768px) {
+    .match-form-container {
+        padding: 10px; /* Reduce el espacio alrededor del contenedor principal */
+        min-height: 90vh; /* Mantiene la altura mínima */
+    }
+
     .equipos-container {
         flex-direction: column;
         align-items: center;
+        gap: 15px; /* Espacio entre las secciones */
     }
+
     .equipo-section {
-        width: 90%;
-        margin-bottom: 20px;
+        width: 90%; /* Hace que cada sección ocupe el 90% del ancho */
+        padding: 10px; /* Reduce el padding interno */
+        font-size: 14px; /* Disminuye el tamaño de fuente */
+        margin-bottom: 9px; /* Espacio entre las secciones */
     }
+
+    .dropdown-container {
+        width: 95%; /* Asegura que el input y lista ocupen todo el ancho disponible */
+        padding: 10px 15px;
+    }
+
+    .dropdown-container input {
+        width: 70%;
+        font-size: 14px; /* Reduce el tamaño de la fuente */
+        padding: 8px;
+    }
+
+    .dropdown-list {
+        width: 100%; /* Se ajusta a la anchura del contenedor */
+        max-height: 150px; /* Reduce la altura máxima */
+    }
+
+    .dropdown-item {
+        padding: 8px; /* Reduce el padding de cada item */
+        font-size: 14px; /* Reduce el tamaño de la fuente */
+    }
+
+    .equipo-section h4 {
+        font-size: 16px; /* Disminuye el tamaño del título */
+        margin-bottom: 10px;
+    }
+
+    .equipo-section table {
+        font-size: 12px; /* Reduce el tamaño de la fuente de las tablas */
+    }
+
+    .counter-container {
+        font-size: 14px; /* Reduce el tamaño de los contadores */
+    }
+
+    .counter-button {
+        padding: 5px 8px; /* Ajusta el tamaño de los botones */
+        font-size: 14px; /* Reduce el tamaño de la fuente de los botones */
+    }
+
+    .counter-value {
+        font-size: 14px; /* Ajusta el tamaño del contador */
+    }
+
     .resultados-container {
-        width: 90%;
+        width: 90%; /* Ajusta el ancho al 90% */
+        height: 40px; /* Hace que el contenedor de resultados sea más pequeño */
+        padding: 10px;
+    }
+
+    .marcador {
+        font-size: 18px; /* Reduce el tamaño del marcador */
+    }
+
+    .resultado-section {
+        font-size: 18px; /* Ajusta el tamaño del marcador de los resultados */
+    }
+
+    .separador {
+        font-size: 24px; /* Reduce el tamaño del separador */
+    }
+    .download-button{
+      margin-top: -20px;  
+    }
+    .download-button,
+    .submit-button {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px; /* Disminuye el tamaño de los botones */
+        
+    }
+
+    .selected-team {
+        font-size: 14px; /* Ajusta el tamaño de la fuente */
+        padding: 5px 10px; /* Ajusta el padding */
+        width: 97%;
+    }
+
+    .coach {
+        font-size: 12px; /* Reduce el tamaño de la fuente de los entrenadores */
+        margin: 0px 0;
+    }
+
+    .coach p {
+        font-size: 12px; /* Ajusta el tamaño de la fuente dentro del coach */
+    }
+
+    /* Ajusta el tamaño de las celdas de la tabla */
+    .equipo-section table th, .equipo-section table td {
+        padding: 3px;
+    }
+
+    /* Ajustes adicionales para pequeñas pantallas */
+    .expulsiones-yellow, .expulsiones-red {
+        font-size: 12px; /* Disminuye el tamaño de las expulsiones */
     }
 }
-
 

@@ -7,11 +7,12 @@
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin-top: 50px;
-    /* Centramos el contenedor verticalmente */
     position: absolute;
     top: 50%; /* Centra el contenedor verticalmente */
     left: 50%; /* Centra el contenedor horizontalmente */
     transform: translate(-50%, -50%); /* Ajusta la posición para que quede perfectamente centrado */
+    width: 90%; /* Ancho flexible para pantallas más pequeñas */
+    max-width: 600px; /* Máximo ancho para pantallas grandes */
 }
 
 /* Header */
@@ -21,9 +22,9 @@
 }
 
 .team-details-logo {
-    width: 150px;
+    width: 120px; /* Tamaño ajustable */
     height: auto;
-    margin-top: -130px;
+    margin-top: -100px; /* Ajuste para pantallas pequeñas */
 }
 
 .team-details-name {
@@ -48,13 +49,13 @@
 }
 
 .team-details-coach h2 {
-    font-size: 20px;
+    font-size: 18px; /* Ajuste responsivo */
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .team-details-coach p {
-    font-size: 18px;
+    font-size: 16px; /* Ajuste responsivo */
     font-weight: normal;
 }
 
@@ -65,7 +66,7 @@
 }
 
 .team-details-players h2 {
-    font-size: 20px;
+    font-size: 18px; /* Ajuste responsivo */
     font-weight: bold;
     margin-bottom: 5px;
 }
@@ -81,7 +82,7 @@
 }
 
 .team-details-player-item {
-    font-size: 16px;
+    font-size: 14px; /* Ajuste responsivo */
     margin: 5px 10px;
 }
 
@@ -89,6 +90,52 @@
 .team-details-loading,
 .team-details-error {
     text-align: center;
-    font-size: 18px;
+    font-size: 16px; /* Ajuste responsivo */
     color: #333;
+}
+
+/* Media Queries para dispositivos más pequeños */
+@media (max-width: 768px) {
+    .team-details-logo {
+        width: 100px; /* Reduce el tamaño del logo */
+        margin-top: -80px; /* Ajusta el margen superior */
+    }
+
+    .team-details-name {
+        font-size: 20px; /* Reduce el tamaño del texto */
+    }
+
+    .team-details-coach h2,
+    .team-details-players h2 {
+        font-size: 16px; /* Reduce el tamaño del texto */
+    }
+
+    .team-details-coach p {
+        font-size: 14px; /* Ajuste responsivo */
+    }
+
+    .team-details-player-item {
+        font-size: 12px; /* Ajuste responsivo */
+    }
+
+    .team-details-container {
+        padding: 15px; /* Reduce el padding para pantallas pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    .team-details-logo {
+        width: 80px; /* Reduce aún más el tamaño del logo */
+        margin-top: -60px; /* Ajusta el margen superior */
+    }
+
+    .team-details-name {
+        font-size: 18px; /* Ajuste adicional */
+    }
+
+    .team-details-container {
+        padding: 10px; /* Reduce el padding en móviles */
+        margin-top: 0; /* Elimina el margen superior extra */
+        top: 50%; /* Centrado vertical ajustado */
+    }
 }

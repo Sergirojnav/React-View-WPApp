@@ -53,6 +53,24 @@ const Upload = () => {
         fetchEquipos();
     }, []);
 
+    // Obtener la lista de usuarios al cargar el componente
+    useEffect(() => {
+        const fetchUsuarios = async () => {
+            try {
+                const response = await fetch("http://192.168.1.54:8080/api/auth/users"); // Endpoint para obtener usuarios
+                if (!response.ok) {
+                    throw new Error("Error al obtener la lista de usuarios");
+                }
+                const data = await response.json();
+                setUsuarios(data); // Guardar usuarios en el estado
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Ocurrió un error al obtener la lista de usuarios");
+            }
+        };
+        fetchUsuarios();
+    }, []);
+
     // Crear un partido
     const handleSubmitPartido = async (e) => {
         e.preventDefault();
@@ -88,6 +106,39 @@ const Upload = () => {
         }
     };
 
+    // Modificar un partido
+    const handleModificarPartido = async (id) => {
+        const partidoModificado = {
+            fecha,
+            hora,
+            resultadoLocal: 0, // Puedes actualizar esto según sea necesario
+            resultadoVisitante: 0, // Puedes actualizar esto según sea necesario
+            equipoLocal,
+            equipoVisitante,
+        };
+
+        try {
+            const response = await fetch(`http://192.168.1.54:8080/partidos/modificar/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(partidoModificado),
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al modificar el partido");
+            }
+
+            const data = await response.json();
+            console.log("Partido modificado:", data);
+            alert("Partido modificado exitosamente");
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Ocurrió un error al modificar el partido");
+        }
+    };
+
     // Crear un usuario
     const handleSubmitUsuario = async (e) => {
         e.preventDefault();
@@ -118,6 +169,37 @@ const Upload = () => {
         } catch (error) {
             console.error("Error:", error);
             alert("Ocurrió un error al crear el usuario");
+        }
+    };
+
+    // Modificar un usuario
+    const handleModificarUsuario = async (id) => {
+        const usuarioModificado = {
+            username,
+            password,
+            role,
+            email,
+        };
+
+        try {
+            const response = await fetch(`http://192.168.1.54:8080/api/auth/modificar/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(usuarioModificado),
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al modificar el usuario");
+            }
+
+            const data = await response.json();
+            console.log("Usuario modificado:", data);
+            alert("Usuario modificado exitosamente");
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Ocurrió un error al modificar el usuario");
         }
     };
 
@@ -156,6 +238,42 @@ const Upload = () => {
         } catch (error) {
             console.error("Error:", error);
             alert("Ocurrió un error al crear el equipo");
+        }
+    };
+
+    // Modificar un equipo
+    const handleModificarEquipo = async (id) => {
+        const formData = new FormData();
+        formData.append("nombre", nombreEquipo);
+        formData.append("imgEquipo", imgEquipo);
+
+        // Agregar los jugadores al equipo
+        formData.append("jugadores", JSON.stringify(jugadores)); // Asegúrate de que esté serializado
+
+        // Agregar los datos del entrenador
+        const entrenadorData = {
+            nombre: entrenadorNombre,
+            apellido: entrenadorApellido,
+            rol: entrenadorRol,
+        };
+        formData.append("entrenador", JSON.stringify(entrenadorData));
+
+        try {
+            const response = await fetch(`http://192.168.1.54:8080/equipos/modificar/${id}`, {
+                method: "PUT",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al modificar el equipo");
+            }
+
+            const data = await response.json();
+            console.log("Equipo modificado:", data);
+            alert("Equipo modificado exitosamente");
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Ocurrió un error al modificar el equipo");
         }
     };
 

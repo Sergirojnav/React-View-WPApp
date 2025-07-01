@@ -11,7 +11,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px; /* Espacio entre las cards */
-  width: 800px; /* Ancho del contenedor */
+  width: 100%; /* Ancho flexible */
+  max-width: 800px; /* Máximo ancho para pantallas grandes */
 }
 
 .card {
@@ -29,7 +30,7 @@
 
 .card p {
   text-align: center;
-  font-size: 1.4em;
+  font-size: 1.2em; /* Ajuste responsivo */
   font-weight: bold;
   color: #0068a9;
 }
@@ -55,6 +56,7 @@
 
 .partido-info {
   display: flex;
+  flex-wrap: wrap; /* Permite que los elementos bajen si no caben */
   justify-content: space-between;  /* Espacio entre los elementos */
   align-items: center;  /* Alineación vertical */
   width: 100%; /* Asegura que los elementos dentro de partido-info estén distribuidos por todo el contenedor */
@@ -62,18 +64,18 @@
 }
 
 .partido-info span {
-  font-size: 1.1em;
+  font-size: 1em; /* Ajuste responsivo */
   font-weight: bold;
-  min-width: 120px; /* Mínimo ancho para evitar que el texto cambie el tamaño de la estructura */
+  min-width: 100px; /* Mínimo ancho para evitar que el texto cambie el tamaño de la estructura */
   white-space: nowrap; /* Evita el salto de línea */
 }
 
 .hora {
   text-align: center;
   font-weight: bold;
-  font-size: 1.3em;
+  font-size: 1.2em; /* Ajuste responsivo */
   color: #0068a9;
-  min-width: 120px; /* Mínimo ancho para mantener la estructura fija */
+  min-width: 100px; /* Ajuste responsivo */
 }
 
 .carousel-section {
@@ -91,4 +93,43 @@
 
 .card:active {
   transform: scale(1); /* Vuelve al tamaño original al hacer clic */
+}
+
+/* Media Queries para dispositivos pequeños */
+@media (max-width: 768px) {
+  .card-container {
+    width: 90%; /* Reduce el ancho en pantallas más pequeñas */
+  }
+
+  .card p {
+    font-size: 1em; /* Reduce el tamaño del texto */
+  }
+
+  .partido-info span {
+    font-size: 0.9em; /* Ajuste del tamaño del texto */
+    min-width: auto; /* Elimina el ancho mínimo para adaptarse */
+  }
+
+  .hora {
+    font-size: 1em; /* Ajusta la hora */
+    min-width: auto; /* Elimina el ancho mínimo */
+  }
+}
+
+@media (max-width: 480px) {
+  .card-container {
+    gap: 10px; /* Reduce el espacio entre las cards */
+  }
+
+  .card {
+    padding: 8px; /* Reduce el padding */
+  }
+
+  .partidos-details {
+    gap: 8px; /* Reduce el espacio entre partidos */
+  }
+
+  .partido-item {
+    padding: 8px; /* Reduce el padding */
+  }
 }

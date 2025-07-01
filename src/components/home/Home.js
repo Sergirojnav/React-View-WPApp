@@ -15,13 +15,13 @@ const Home = () => {
   useEffect(() => {
     const fetchPartidos = async () => {
       try {
-        const response27 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2024-12-27');
+        const response27 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2025-07-04');
         setPartidos27(response27.data);
 
-        const response28 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2024-12-28');
+        const response28 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2025-07-05');
         setPartidos28(response28.data);
 
-        const response29 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2024-12-29');
+        const response29 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2025-07-06');
         setPartidos29(response29.data);
       } catch (error) {
         console.error('Error fetching partidos:', error);
@@ -69,9 +69,9 @@ const Home = () => {
     <div className="home-container">
       <div className="card-container">
         <h2>MATCHES</h2>
-        <div className="card" onClick={() => handleCardToggle('2024-12-27')}>
-          <p>27th DECEMBER 2024</p>
-          {expandedCard === '2024-12-27' && (
+        <div className="card" onClick={() => handleCardToggle('2025-07-04')}>
+        <p>4th JUL 2025</p>
+          {expandedCard === '2025-07-04' && (
             <div className="partidos-details">
               {Object.keys(partidosAgrupados27).map((hora) => (
                 <div key={hora}>
@@ -95,9 +95,9 @@ const Home = () => {
           )}
         </div>
 
-        <div className="card" onClick={() => handleCardToggle('2024-12-28')}>
-          <p>28th DECEMBER 2024</p>
-          {expandedCard === '2024-12-28' && (
+        <div className="card" onClick={() => handleCardToggle('2025-07-05')}>
+          <p>5th JUL 2025</p>
+          {expandedCard === '2025-07-05' && (
             <div className="partidos-details">
               {Object.keys(partidosAgrupados28).map((hora) => (
                 <div key={hora}>
@@ -121,14 +121,14 @@ const Home = () => {
           )}
         </div>
 
-        <div className="card" onClick={() => handleCardToggle('2024-12-29')}>
-          <p>29th DECEMBER 2024</p>
-          {expandedCard === '2024-12-29' && (
+                <div className="card" onClick={() => handleCardToggle('2025-07-06')}>
+          <p>6th JUL 2025</p>
+          {expandedCard === '2025-07-06' && (
             <div className="partidos-details">
-              {Object.keys(partidosAgrupados29).map((hora) => (
+              {Object.keys(partidosAgrupados28).map((hora) => (
                 <div key={hora}>
                   <div className="hora">{hora}</div>
-                  {partidosAgrupados29[hora].map((partido) => (
+                  {partidosAgrupados28[hora].map((partido) => (
                     <div
                       key={partido.id}
                       className="partido-item"
@@ -146,6 +146,8 @@ const Home = () => {
             </div>
           )}
         </div>
+
+
       </div>
 
       <div className="carousel-section">

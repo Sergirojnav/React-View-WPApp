@@ -1,4 +1,4 @@
-/* General navbar styling */
+/* Navbar general */
 .navbar {
     background-color: #ffffff;
     color: #0064a6;
@@ -6,7 +6,7 @@
 
 .navbar-menu li .active {
     font-weight: bold;
-    color: #0068a9; /* Cambia el color si quieres */
+    color: #0068a9;
 }
 
 .navbar-content {
@@ -17,8 +17,8 @@
 }
 
 .navbar-logo {
-    width: 55px;
-    height: 55px;
+    width: 75px;
+    height: 65px;
 }
 
 .navbar-menu {
@@ -26,7 +26,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    gap: 100px;
+    gap: 50px; /* Aumentar espacio entre elementos */
     transition: max-height 0.3s ease-in-out;
     overflow: hidden;
 }
@@ -42,108 +42,41 @@
     color: #000000;
 }
 
-.navbar-user {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-}
-
-.user-icon {
-    margin-right: 8px;
-    font-size: 24px;
-}
-
 .navbar-toggle {
     display: none;
     background: none;
     border: none;
     font-size: 40px;
     cursor: pointer;
-    color: white;
+    color: #0064a6;
 }
 
-/* Estilos para el contenedor del usuario */
-.navbar-user {
-    display: flex;
-    align-items: center;
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .user-icon {
-    margin-right: 10px;
-    font-size: 18px;
-  }
-  
-  /* Estilo para el menú desplegable */
-  .dropdown-menu {
-    position: absolute;
-    top: 30px;  /* Para que el menú aparezca debajo del nombre de usuario */
-    right: 0;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    width: 150px;
-    padding: 10px 0;
-    z-index: 10;
-  }
-  
-  .logout-button {
-    background: none;
-    border: none;
-    color: #f44336;
-    font-size: 16px;
-    padding: 10px;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .logout-button:hover {
-    background-color: rgba(244, 67, 54, 0.1);
-  }
-  
-
-
-
-
-
-/* Responsiveness */
+/* Responsividad */
 @media (max-width: 768px) {
     .navbar-content {
-        flex-direction: column; /* Cambia a disposición en columna */
-        align-items: center; /* Centra los elementos */
-    }
-
-    .navbar-logo {
-        margin-bottom: 10px; /* Espacio entre logo y botón */
-        width: 60px;
-        height: 60px;
-    }
-
-    .navbar-toggle {
-        display: block;
-        margin-bottom: 10px; /* Espacio entre el botón y el usuario */
-    }
-
-    .navbar-user {
-        flex-direction: column; /* Coloca el usuario en una columna */
-        align-items: center; /* Centra horizontalmente el usuario */
-        margin-bottom: 10px; /* Espacio entre el usuario y el menú */
+        flex-direction: column; /* Cambiar disposición a columna */
+        align-items: center;
     }
 
     .navbar-menu {
-        flex-direction: column; /* Cambia a disposición en columna */
-        align-items: center; /* Centra horizontalmente los elementos */
-        justify-content: center; /* Centra verticalmente si es necesario */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
         width: 100%; /* Asegura que ocupe el ancho completo */
     }
 
     .navbar-menu.open {
-        max-height: 300px; /* Ajusta según el contenido */
+        max-height: 500px; /* Ajusta la altura máxima según la cantidad de enlaces */
+    }
+
+    .navbar-menu li {
+        padding: 15px 0; /* Aumentar el espaciado entre los enlaces */
+    }
+
+    .navbar-toggle {
+        display: block;
+        margin-bottom: 10px;
     }
 }

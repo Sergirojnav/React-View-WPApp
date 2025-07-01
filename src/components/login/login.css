@@ -12,11 +12,14 @@
   }
   
   /* Logo */
-  .login-logo img {
-    width: 150px;
-    height: 150px;
-    margin-bottom: 20px;
-  }
+.login-logo img {
+  width: 250px;
+  height: 250px;
+  margin-bottom: 20px;
+  border-radius: 50%; /* Opcional: para bordes redondeados */
+  box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.4);
+  background-color: #dddddd38;
+}
   
   /* Formulario */
   .login-form {
