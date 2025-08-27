@@ -1,135 +1,199 @@
-/* Home.css */
+/* 🔹 Aseguramos que html y body ocupen toda la altura */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 🔹 Fondo animado aplicado al body */
+body {
+  background: linear-gradient(-45deg, #0d1b2a, #1b263b, #415a77, #778da9);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+}
+
+/* 🔹 Animación */
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Contenedor central */
 .home-container {
+  padding: 20px;
   display: flex;
-  flex-direction: column;  /* Apilamos los elementos verticalmente */
   justify-content: center;
-  align-items: center;
-  padding: 20px;  /* Espacio alrededor */
+  min-height: 60vh;
 }
 
-.card-container {
+/* Layout principal */
+.layout {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1200px;  /* ancho máximo en escritorio */
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Columna izquierda (calendario + carousel) */
+.left-column {
   display: flex;
   flex-direction: column;
-  gap: 15px; /* Espacio entre las cards */
-  width: 100%; /* Ancho flexible */
-  max-width: 800px; /* Máximo ancho para pantallas grandes */
+  gap: 20px;
+  flex: 2;
 }
 
-.card {
-  background-color: #fff;
-  border: 1px solid #ddd;
+/* Cajas con fondo semitransparente estilo vidrio */
+.calendar-box,
+.carousel-section,
+.stats-box {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
   border-radius: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Calendario */
+.calendar-box {
+  text-align: center;
+}
+
+.mini-calendar p {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(30px, 1fr));
+  gap: 8px;
+  justify-content: center;
+}
+
+.day {
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 8px;
   cursor: pointer;
-  padding: 10px; /* Espaciado dentro de la card */
-}
-
-.card-container h2 {
+  transition: transform 0.2s, background 0.2s;
   text-align: center;
 }
-
-.card p {
-  text-align: center;
-  font-size: 1.2em; /* Ajuste responsivo */
-  font-weight: bold;
-  color: #0068a9;
+.day:hover {
+  background: #0068a9;
+  transform: scale(1.1);
+}
+.highlight {
+  background: #0096c7;
+  color: white;
 }
 
-.partidos-details {
-  margin-top: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Espacio entre los partidos */
-}
-
-.partido-item {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  background-color: #0064a66e;
-}
-
-.partido-info {
-  display: flex;
-  flex-wrap: wrap; /* Permite que los elementos bajen si no caben */
-  justify-content: space-between;  /* Espacio entre los elementos */
-  align-items: center;  /* Alineación vertical */
-  width: 100%; /* Asegura que los elementos dentro de partido-info estén distribuidos por todo el contenedor */
-  text-align: center;  /* Centra el texto dentro de cada span */
-}
-
-.partido-info span {
-  font-size: 1em; /* Ajuste responsivo */
-  font-weight: bold;
-  min-width: 100px; /* Mínimo ancho para evitar que el texto cambie el tamaño de la estructura */
-  white-space: nowrap; /* Evita el salto de línea */
-}
-
-.hora {
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.2em; /* Ajuste responsivo */
-  color: #0068a9;
-  min-width: 100px; /* Ajuste responsivo */
-}
-
+/* Carousel */
 .carousel-section {
-  margin-top: 40px;
-  width: 100%; /* Ocupa todo el ancho disponible */
+  flex: 1;
+  padding: 0px;
   display: flex;
-  justify-content: center; /* Centra el carousel */
+  justify-content: center;  /* centrado horizontal */
+  align-items: center;      /* centrado vertical */
+}
+
+/* Estadísticas a la derecha */
+.stats-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.stats-box h2 {
   align-items: center;
+  text-align: center;
 }
 
-.card:hover {
-  transform: scale(1.05); /* Efecto hover */
-  transition: transform 0.3s ease;
+.stat-card {
+  background: rgba(255,255,255,0.15);
+  margin: 5px 0;
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.stat-card strong {
+  font-size: 1.2em;
+  margin-top: 5px;
+}
+.stat-card.total {
+  background: #0096c7;
 }
 
-.card:active {
-  transform: scale(1); /* Vuelve al tamaño original al hacer clic */
+/* 📱 Responsividad */
+
+/* Tablets y móviles medianos */
+@media (max-width: 1024px) {
+  .layout {
+    gap: 20px;
+    padding: 0 15px;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(7, minmax(25px, 1fr));
+    gap: 6px;
+  }
 }
 
-/* Media Queries para dispositivos pequeños */
+/* Móviles */
 @media (max-width: 768px) {
-  .card-container {
-    width: 90%; /* Reduce el ancho en pantallas más pequeñas */
+  .layout {
+    flex-direction: column;
+    align-items: center;
+    max-width: 95%;
+    padding: 0 10px;
   }
 
-  .card p {
-    font-size: 1em; /* Reduce el tamaño del texto */
+  .left-column,
+  .stats-box,
+  .carousel-section {
+    width: 100%;
+    max-width: 500px;
   }
 
-  .partido-info span {
-    font-size: 0.9em; /* Ajuste del tamaño del texto */
-    min-width: auto; /* Elimina el ancho mínimo para adaptarse */
+  .stats-box {
+    order: 3; /* en móvil, ponemos stats al final */
   }
 
-  .hora {
-    font-size: 1em; /* Ajusta la hora */
-    min-width: auto; /* Elimina el ancho mínimo */
+  .days-grid {
+    grid-template-columns: repeat(7, minmax(20px, 1fr));
+    gap: 5px;
   }
 }
 
+/* Móviles muy pequeños */
 @media (max-width: 480px) {
-  .card-container {
-    gap: 10px; /* Reduce el espacio entre las cards */
+  .home-container {
+    padding: 10px;
   }
 
-  .card {
-    padding: 8px; /* Reduce el padding */
+  .calendar-box,
+  .carousel-section,
+  .stats-box {
+    padding: 12px;
   }
 
-  .partidos-details {
-    gap: 8px; /* Reduce el espacio entre partidos */
+  .day {
+    padding: 5px;
+    font-size: 0.8em;
   }
 
-  .partido-item {
-    padding: 8px; /* Reduce el padding */
+  .stat-card strong {
+    font-size: 1em;
   }
 }

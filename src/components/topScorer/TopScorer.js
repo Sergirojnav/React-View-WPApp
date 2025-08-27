@@ -7,7 +7,7 @@ const TopScorer = () => {
   useEffect(() => {
     const fetchTopScorers = async () => {
       try {
-        const response = await axios.get('http://192.168.1.54:8080/jugadores/top-scorers');
+        const response = await axios.get('http://16.170.214.129:8080/jugadores/top-scorers');
         console.log('API Top Scorers:', response.data);
         setTopScorers(response.data);
       } catch (error) {
@@ -78,11 +78,12 @@ const TopScorer = () => {
             <thead>
               <tr>
                 <th>Rank</th>
-                <th>Jugador</th>
-                <th>Equipo</th>
-                <th>Goles</th>
-                <th>Partidos</th>
-                <th>Expulsiones</th>
+                <th>Player</th>
+                <th>#</th>
+                <th>Team</th>
+                <th>Goals</th>
+                <th>Matches</th>
+                <th>Exclusions</th>
               </tr>
             </thead>
             <tbody>
@@ -95,6 +96,7 @@ const TopScorer = () => {
         <tr>
           <td>${index + 1}</td>
           <td>${scorer.jugadorNombre}</td>
+          <td>${scorer.numeroGorro}</td>
           <td>${scorer.equipoNombre}</td>
           <td>${scorer.totalGoles}</td>
           <td>${scorer.partidosJugados}</td>
@@ -155,6 +157,9 @@ const TopScorer = () => {
                   Jugador
                 </th>
                 <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
+                  Nº Gorro
+                </th>
+                <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
                   Equipo
                 </th>
                 <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
@@ -176,6 +181,9 @@ const TopScorer = () => {
                   </td>
                   <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
                     {scorer.jugadorNombre}
+                  </td>
+                  <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
+                    {scorer.numeroGorro}
                   </td>
                   <td style={{ border: '1px solid #ddd', padding: '8px', color: '#005f9e' }}>
                     {scorer.equipoNombre}

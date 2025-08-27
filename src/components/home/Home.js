@@ -2,156 +2,153 @@ import React, { useEffect, useState } from 'react';
 import './Home.css';
 import TeamCarousel from '../home/teams/TeamsCarousel';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
 const Home = () => {
-  const [partidos27, setPartidos27] = useState([]);
-  const [partidos28, setPartidos28] = useState([]);
-  const [partidos29, setPartidos29] = useState([]);
-  const [expandedCard, setExpandedCard] = useState(null);
+  const [quickStats, setQuickStats] = useState({
+    mostWins: "No data",
+    topScorer: "No data",
+    leastGoals: "No data",
+    totalMatches: "0"
+  });
 
-  const navigate = useNavigate(); // Hook de navegación
+useEffect(() => {
+  const fetchTopScorer = async () => {
+    try {
+      const response = await axios.get('http://16.170.214.129:8080/jugadores/top-scorers');
+      if (response.data && response.data.length > 0) {
+        const topPlayer = response.data[0]; // Primer jugador = máximo goleador
+        setQuickStats(prev => ({
+          ...prev,
+          topScorer: `${topPlayer.jugadorNombre} (#${topPlayer.numeroGorro}) - ${topPlayer.totalGoles} goles`
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching top scorer data', error);
+    }
+  };
 
+  fetchTopScorer();
+
+
+  // Opcional: refrescar cada X segundos
+  const interval = setInterval(fetchTopScorer, 60000); // cada 1 minuto
+  return () => clearInterval(interval);
+
+}, []);
+
+useEffect(() => {
+  const fetchMostWins = async () => {
+    try {
+      const response = await axios.get('http://16.170.214.129:8080/partidos/most-wins');
+      if (response.data) {
+        setQuickStats(prev => ({
+          ...prev,
+          mostWins: `${response.data.equipo} - ${response.data.victorias} wins`
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching most wins team', error);
+    }
+  };
+
+  fetchMostWins();
+  const interval = setInterval(fetchMostWins, 60000); // refrescar cada minuto
+  return () => clearInterval(interval);
+}, []);
+
+
+useEffect(() => {
+  const fetchTotalMatches = async () => {
+    try {
+      const response = await axios.get('http://16.170.214.129:8080/partidos/count');
+      if (response.data) {
+        setQuickStats(prev => ({
+          ...prev,
+          totalMatches: response.data.totalMatches
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching total matches', error);
+    }
+  };
+
+  fetchTotalMatches();
+
+  // Refrescar cada minuto
+  const interval = setInterval(fetchTotalMatches, 60000);
+  return () => clearInterval(interval);
+
+}, []);
+
+// Least goals conceded
   useEffect(() => {
-    const fetchPartidos = async () => {
+    const fetchLeastGoals = async () => {
       try {
-        const response27 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2025-07-04');
-        setPartidos27(response27.data);
-
-        const response28 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2025-07-05');
-        setPartidos28(response28.data);
-
-        const response29 = await axios.get('http://192.168.1.54:8080/partidos/por-fecha?fecha=2025-07-06');
-        setPartidos29(response29.data);
+        const response = await axios.get('http://16.170.214.129:8080/partidos/menos-goleado');
+        if (response.data) {
+          const { equipo, golesRecibidos } = response.data;
+          setQuickStats(prev => ({
+            ...prev,
+            leastGoals: `${equipo.nombre} - ${golesRecibidos} goals conceded`
+          }));
+        }
       } catch (error) {
-        console.error('Error fetching partidos:', error);
+        console.error('Error fetching least goals conceded', error);
       }
     };
 
-    fetchPartidos();
+    fetchLeastGoals();
+    const interval = setInterval(fetchLeastGoals, 60000);
+    return () => clearInterval(interval);
   }, []);
-
-  const handleCardToggle = (date) => {
-    setExpandedCard(expandedCard === date ? null : date);
-  };
-
-  const formatHora = (hora) => {
-    if (hora) {
-      const [hours, minutes] = hora.split(':');
-      return `${hours}:${minutes}`;
-    }
-    return '';
-  };
-
-  const agruparPorHora = (partidos) => {
-    return partidos.reduce((acc, partido) => {
-      const hora = formatHora(partido.hora);
-      if (!acc[hora]) {
-        acc[hora] = [];
-      }
-      acc[hora].push(partido);
-      return acc;
-    }, {});
-  };
-
-  const partidosAgrupados27 = agruparPorHora(partidos27);
-  const partidosAgrupados28 = agruparPorHora(partidos28);
-  const partidosAgrupados29 = agruparPorHora(partidos29);
-
-  const handlePartidoClick = (equipoLocal, equipoVisitante) => {
-    // Navegar a 'match-form' con los equipos seleccionados
-    navigate('/match-form', {
-      state: { equipoLocal, equipoVisitante } // Pasar los equipos como estado
-    });
-  };
 
   return (
     <div className="home-container">
-      <div className="card-container">
-        <h2>MATCHES</h2>
-        <div className="card" onClick={() => handleCardToggle('2025-07-04')}>
-        <p>4th JUL 2025</p>
-          {expandedCard === '2025-07-04' && (
-            <div className="partidos-details">
-              {Object.keys(partidosAgrupados27).map((hora) => (
-                <div key={hora}>
-                  <div className="hora">{hora}</div>
-                  {partidosAgrupados27[hora].map((partido) => (
-                    <div
-                      key={partido.id}
-                      className="partido-item"
-                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
-                    >
-                      <div className="partido-info">
-                        <span>{partido.equipoLocal.nombre}</span>
-                        {/* <span> - </span> */}
-                        <span>{partido.equipoVisitante.nombre}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
+      <div className="layout">
+        {/* Columna izquierda: calendario y carousel */}
+        <div className="left-column">
+          <div className="calendar-box">
+            <h2>CALENDAR</h2>
+            <div className="mini-calendar">
+              <p>AUGUST 2025</p>
+              <div className="days-grid">
+                {Array.from({ length: 31 }, (_, i) => (
+                  <div 
+                    key={i+1} 
+                    className={`day ${[28,29,30,31].includes(i+1) ? "highlight" : ""}`}
+                  >
+                    {i+1}
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
+          </div>
+
+          <div className="carousel-section">
+            <TeamCarousel />
+          </div>
         </div>
 
-        <div className="card" onClick={() => handleCardToggle('2025-07-05')}>
-          <p>5th JUL 2025</p>
-          {expandedCard === '2025-07-05' && (
-            <div className="partidos-details">
-              {Object.keys(partidosAgrupados28).map((hora) => (
-                <div key={hora}>
-                  <div className="hora">{hora}</div>
-                  {partidosAgrupados28[hora].map((partido) => (
-                    <div
-                      key={partido.id}
-                      className="partido-item"
-                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
-                    >
-                      <div className="partido-info">
-                        <span>{partido.equipoLocal.nombre}</span>
-                        {/* <span> - </span> */}
-                        <span>{partido.equipoVisitante.nombre}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
+        {/* Columna derecha: estadísticas */}
+        <div className="stats-box">
+          <h2>QUICK STATISTICS</h2>
+          <div className="stat-card">
+            <span>MOST WINS</span>
+            <strong>{quickStats.mostWins}</strong>
+          </div>
+          <div className="stat-card">
+            <span>TOP SCORER</span>
+            <strong>{quickStats.topScorer}</strong>
+          </div>
+          <div className="stat-card">
+            <span>LEAST GOALS CONCEDED</span>
+            <strong>{quickStats.leastGoals}</strong>
+          </div>
+          <div className="stat-card total">
+            <span>TOTAL MATCHES</span>
+            <strong>{quickStats.totalMatches}</strong>
+          </div>
         </div>
-
-                <div className="card" onClick={() => handleCardToggle('2025-07-06')}>
-          <p>6th JUL 2025</p>
-          {expandedCard === '2025-07-06' && (
-            <div className="partidos-details">
-              {Object.keys(partidosAgrupados28).map((hora) => (
-                <div key={hora}>
-                  <div className="hora">{hora}</div>
-                  {partidosAgrupados28[hora].map((partido) => (
-                    <div
-                      key={partido.id}
-                      className="partido-item"
-                      onClick={() => handlePartidoClick(partido.equipoLocal, partido.equipoVisitante)} // Enviar equipos a MatchForm
-                    >
-                      <div className="partido-info">
-                        <span>{partido.equipoLocal.nombre}</span>
-                        {/* <span> - </span> */}
-                        <span>{partido.equipoVisitante.nombre}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-
-      </div>
-
-      <div className="carousel-section">
-        <TeamCarousel />
       </div>
     </div>
   );

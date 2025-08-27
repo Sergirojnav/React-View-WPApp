@@ -1,77 +1,161 @@
-/* CSS específico para el formulario en línea */
-
-.create-match{
+/* Contenedor principal */
+.create-match {
     text-align: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
 }
 
+.create-match label {
+    color: #000;
+}
+
+/* Formularios */
 .upload-form {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 0 auto 30px auto;
     padding: 16px;
     background-color: #f4f4f9;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.upload-form .form-group {
-    display: flex;
-    flex-direction: column;
-    width: 15%; /* Cada campo tendrá el 15% del ancho */
-    margin-bottom: 6px;
+/* Grupos de campos */
+.upload-form .form-group,
+.upload-form input,
+.upload-form select {
+    margin-bottom: 10px;
+    width: 100%;
+    display: block;
 }
 
-.upload-form .form-label {
+/* Labels */
+.upload-form label {
     font-size: 14px;
     font-weight: 600;
-    color: #333;
     margin-bottom: 4px;
+    display: block;
 }
 
-.upload-form .form-input,
-.upload-form .form-select {
-    padding: 5px;
+/* Inputs y selects */
+.upload-form input,
+.upload-form select {
+    padding: 8px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    width: 100%;
 }
 
-.upload-form .submit-button {
-    width: 100%;
-    padding: 8px;
+/* Botones generales */
+.upload-form button {
+    padding: 10px 16px;
     font-size: 16px;
     background-color: #0068a9;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-top: 10px;
     transition: background-color 0.3s;
-    margin-top: 20px; /* Para que el botón no quede en la misma fila */
 }
 
-.upload-form .submit-button:hover {
+.upload-form button:hover {
     background-color: #02568a;
 }
 
+/* Botón de modificación */
+.modify-button {
+    background-color: #ff9800;
+}
 
+.modify-button:hover {
+    background-color: #e68900;
+}
 
-/* Asegurar que en pantallas pequeñas el formulario se ajuste */
+/* Contenedor de jugadores en línea */
+.upload-form div {
+    margin-bottom: 8px;
+}
+
+/* Agregar jugador */
+.upload-form button.add-player-button {
+    background-color: #28a745;
+    margin-top: 10px;
+}
+
+.upload-form button.add-player-button:hover {
+    background-color: #218838;
+}
+
+/* Modificación de equipo */
+.modify-form {
+    background-color: #ffffff3e;
+    border: 1px solid #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Título de modificación */
+.modify-form h3 {
+    color: #000000;
+    margin-bottom: 15px;
+}
+
+/* Listado de equipos alineado con formularios */
+.teams-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Alinea al inicio, igual que los formularios */
+    gap: 15px;
+    max-width: 1000px; /* Igual que los formularios */
+    margin: 0 auto;
+}
+
+/* Tarjetas de equipos */
+.team-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 160px;
+    border-radius: 6px;
+    text-align: center;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Imagen de equipo */
+.team-card img {
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+/* Nombre del equipo en negro */
+.team-card h4 {
+    color: #000;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .upload-form .form-group {
-        width: 48%; /* Ocupa el 48% en pantallas más pequeñas */
+    .upload-form {
+        flex-direction: column;
+    }
+
+    .team-card {
+        width: 45%;
     }
 }
 
 @media (max-width: 480px) {
-    .upload-form .form-group {
-        width: 100%; /* Los campos ocuparán todo el ancho en pantallas muy pequeñas */
+    .team-card {
+        width: 100%;
     }
 
-    .upload-form .submit-button {
-        width: 100%; /* El botón también ocupa el 100% */
+    .upload-form button {
+        width: 100%;
     }
 }

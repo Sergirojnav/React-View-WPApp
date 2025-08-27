@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.1.54:8080';
+const API_URL = 'http://16.170.214.129:8080';
 
 export const getTeams = async () => {
     const response = await axios.get(`${API_URL}/equipos`);

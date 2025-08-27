@@ -6,7 +6,7 @@
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-attachment: fixed; /* Hace que el fondo se quede fijo */
     font-family: 'Montserrat';
-    min-height: 100vh; /* Asegura que el fondo cubra toda la altura de la ventana */
+    min-height: 90vh; /* Asegura que el fondo cubra toda la altura de la ventana */
 }
 
 .equipos-container {

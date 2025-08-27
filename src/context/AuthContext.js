@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
   // Login con API de Spring Boot
   const login = async (username, password) => {
     try {
-      const response = await axios.post('http://192.168.1.54:8080/api/auth/login', {
+      const response = await axios.post('http://16.170.214.129:8080/api/auth/login', {
         username,
         password,
       });
