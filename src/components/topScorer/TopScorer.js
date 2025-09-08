@@ -90,7 +90,7 @@ const TopScorer = () => {
     `);
 
     // hasta 30
-    const topThirtyScorers = topScorers.slice(0, 30);
+    const topThirtyScorers = topScorers.slice(0, 50);
     topThirtyScorers.forEach((scorer, index) => {
       newWindow.document.write(`
         <tr>
@@ -157,7 +157,7 @@ const TopScorer = () => {
                   Jugador
                 </th>
                 <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
-                  Nº Gorro
+                  #
                 </th>
                 <th style={{ padding: '8px', border: '1px solid #ddd', color: '#005f9e' }}>
                   Equipo

@@ -1,351 +1,353 @@
 .match-form-container {
-    margin: 0;
-    background-image: url(../../assets/images/form-wallpaper.png);
-    background-size: cover; /* Hace que la imagen se ajuste completamente dentro del contenedor */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-attachment: fixed; /* Hace que el fondo se quede fijo */
-    font-family: 'Montserrat';
-    min-height: 90vh; /* Asegura que el fondo cubra toda la altura de la ventana */
+  margin: 0;
+  background-image: url(../../assets/images/form-wallpaper.png);
+  background-size: cover; /* Hace que la imagen se ajuste completamente dentro del contenedor */
+  background-position: center; /* Centra la imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-attachment: fixed; /* Hace que el fondo se quede fijo */
+  font-family: 'Montserrat';
+  min-height: 100vh; /* Asegura que el fondo cubra toda la altura de la ventana */
 }
 
 .equipos-container {
-    display: flex;
-    padding: 20px;
-    gap: 10px; /* Espacio entre columnas */
-    flex-wrap: wrap; /* Flex wrap para pantallas pequeñas */
-    justify-content: center; /* Centra los elementos dentro del contenedor */
+  display: flex;
+  padding: 20px;
+  gap: 10px; /* Espacio entre columnas */
+  flex-wrap: wrap; /* Flex wrap para pantallas pequeñas */
+  justify-content: center; /* Centra los elementos dentro del contenedor */
 }
 
 .equipo-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 35%;
-    background-color: #76adcdbb;
-    /* padding: 20px; */
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 35%;
+  background-color: #76adcdbb;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-.dropdown-container{
-    position: relative; /* Permite posicionar la lista relativa al contenedor */
-    padding: 20px;
-    display: flex;
-    background-color: #f8f8f8;
-    color: #0068a9;
-    border-radius: 15px;
-    justify-content: space-between;
-    padding: 15px 20px;
-    width: 94%;
+.dropdown-container {
+  position: relative;
+  padding: 20px;
+  display: flex;
+  background-color: #f8f8f8;
+  color: #0068a9;
+  border-radius: 15px;
+  justify-content: space-between;
+  padding: 15px 20px;
+  width: 94%;
 }
 
-.dropdown-container input{
-    width: 70%;
+.dropdown-container input {
+  width: 70%;
 }
 
 .dropdown-list {
-    position: absolute; /* Se posicionará relativo al contenedor */
-    top: 100%; /* Alinea la lista justo debajo del input */
-    left: 0;
-    width: 93%; /* Se asegura de ocupar el mismo ancho que el contenedor */
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    margin-top: 5px; /* Espaciado entre el input y la lista */
-    z-index: 1000; /* Evita problemas de superposición */
-    max-height: 200px; /* Limita la altura del dropdown */
-    overflow-y: auto; /* Agrega scroll si es necesario */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Agrega un efecto visual */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 93%;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-top: 5px;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-item {
-    padding: 10px;
-    cursor: pointer;
-    color: #0068a9;
-    font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+  color: #0068a9;
+  font-weight: bold;
 }
 
 .dropdown-item:hover {
-    background-color: #0068a9;
-    color: white;
+  background-color: #0068a9;
+  color: white;
 }
 
-
 .equipo-section h4 {
-    margin-bottom: 10px;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .equipo-section table {
-    width: 100%;
-    border-collapse: collapse;
-    
+  width: 100%;
+  border-collapse: collapse;
 }
 
-.equipo-section table th, .equipo-section table td {
-    padding: 7.9px;
-    text-align: center;
-    border: none;
-    font-weight: bold;
-    /* border: 1px solid #ddd; */
-     
+.equipo-section table th,
+.equipo-section table td {
+  padding: 7.9px;
+  text-align: center;
+  border: none;
+  font-weight: bold;
 }
 
 .equipo-section table th {
-    background-color: #ffffffda;
-    border: none;
-    color: #0068a9;
+  background-color: #ffffffda;
+  border: none;
+  color: #0068a9;
 }
-
-
 
 .counter-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
-.counter-button {
-    background-color: #0068a9;
-    font-weight: bold;
-    color: #ffffff;
-    padding: 5px 10px;
-    border: none;
-    cursor: pointer;
+.counter-container button {
+  background-color: #0068a9;
+  font-weight: bold;
+  color: #ffffff;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
 }
 
 .counter-button:disabled {
-    background-color: #0068a9;
+  background-color: #0068a9;
 }
 
 .counter-value {
-    font-size: 16px;
-    font-weight: bold;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .resultados-container {
-    width: 230px;
-    height: 100px;
-    background-color: #f8f8f8;
-    font-weight: bold;
-    color: #0068a9;
-    border-radius: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 90px;
+  width: 230px;
+  height: 100px;
+  background-color: #f8f8f8;
+  font-weight: bold;
+  color: #0068a9;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 90px;
 }
 
-.marcador{
-    display: flex;
+.marcador {
+  display: flex;
+}
+
+.marcador span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
 .resultado-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
-.resultado-local, .resultado-visitante {
-    padding: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0 15px;
+.resultado-local,
+.resultado-visitante {
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 15px;
 }
 
 .separador {
-    font-size: 36px;
-    margin: 0 30px;
-    margin-top: 25px;
+  font-size: 36px;
+  margin: 0 30px;
+  margin-top: 25px;
 }
 
-.download-button{
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #ffffff;
-    font-weight: bold;
-    color: #0068a9;
-    border: none;
-    border-radius: 15px;
+.download-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #ffffff;
+  font-weight: bold;
+  color: #0068a9;
+  border: none;
+  border-radius: 15px;
 }
 
-.submit-button  {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #0068a9;
-    color: white;
-    font-weight: bold;
-    border: 4px solid white;
-    border-radius: 15px;
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #0068a9;
+  color: white;
+  font-weight: bold;
+  border: 4px solid white;
+  border-radius: 15px;
 }
 
-.download-button:hover{
-    background-color: #0068a9;
-    font-weight: bold;
+.download-button:hover {
+  background-color: #0068a9;
+  font-weight: bold;
 }
+
 .submit-button:hover {
-    background-color: #0068a9;
-    font-weight: bold;
+  background-color: #0068a9;
+  font-weight: bold;
 }
 
-.selected-team{
-    background-color: #ffffff;
-    color: #0068a9;
-    width: 100%;
-    border-radius: 15px;
+.selected-team {
+  background-color: #ffffff;
+  color: #0068a9;
+  width: 100%;
+  border-radius: 15px;
 }
 
 .coach {
-    text-align: center;  
-    margin: 10px 0;     
-    width: 100%;
+  text-align: center;
+  margin: 10px 0;
+  width: 100%;
 }
 
 .coach p {
-    margin: 0;           
-    padding: 5px 0;  
-    font-weight: bold;    
+  margin: 0;
+  padding: 5px 0;
+  font-weight: bold;
 }
 
 .expulsiones-yellow {
-    background-color: rgba(255, 255, 0, 0.418);
+  background-color: rgba(255, 255, 0, 0.418);
 }
 
 .expulsiones-red {
-    background-color: rgba(255, 0, 0, 0.534);
+  background-color: rgba(255, 0, 0, 0.534);
 }
 
-
+/* 📱 Responsive */
 @media (max-width: 768px) {
-    .match-form-container {
-        padding: 10px; /* Reduce el espacio alrededor del contenedor principal */
-        min-height: 90vh; /* Mantiene la altura mínima */
-    }
+  .match-form-container {
+    padding: 10px;
+    min-height: 90vh;
+  }
 
-    .equipos-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px; /* Espacio entre las secciones */
-    }
+  .equipos-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
 
-    .equipo-section {
-        width: 90%; /* Hace que cada sección ocupe el 90% del ancho */
-        padding: 10px; /* Reduce el padding interno */
-        font-size: 14px; /* Disminuye el tamaño de fuente */
-        margin-bottom: 9px; /* Espacio entre las secciones */
-    }
+  .equipo-section {
+    width: 90%;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 9px;
+  }
 
-    .dropdown-container {
-        width: 95%; /* Asegura que el input y lista ocupen todo el ancho disponible */
-        padding: 10px 15px;
-    }
+  .dropdown-container {
+    width: 95%;
+    padding: 10px 15px;
+  }
 
-    .dropdown-container input {
-        width: 70%;
-        font-size: 14px; /* Reduce el tamaño de la fuente */
-        padding: 8px;
-    }
+  .dropdown-container input {
+    width: 70%;
+    font-size: 14px;
+    padding: 8px;
+  }
 
-    .dropdown-list {
-        width: 100%; /* Se ajusta a la anchura del contenedor */
-        max-height: 150px; /* Reduce la altura máxima */
-    }
+  .dropdown-list {
+    width: 100%;
+    max-height: 150px;
+  }
 
-    .dropdown-item {
-        padding: 8px; /* Reduce el padding de cada item */
-        font-size: 14px; /* Reduce el tamaño de la fuente */
-    }
+  .dropdown-item {
+    padding: 8px;
+    font-size: 14px;
+  }
 
-    .equipo-section h4 {
-        font-size: 16px; /* Disminuye el tamaño del título */
-        margin-bottom: 10px;
-    }
+  .equipo-section h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
 
-    .equipo-section table {
-        font-size: 12px; /* Reduce el tamaño de la fuente de las tablas */
-    }
+  .equipo-section table {
+    font-size: 12px;
+  }
 
-    .counter-container {
-        font-size: 14px; /* Reduce el tamaño de los contadores */
-    }
+  .counter-container {
+    font-size: 14px;
+  }
 
-    .counter-button {
-        padding: 5px 8px; /* Ajusta el tamaño de los botones */
-        font-size: 14px; /* Reduce el tamaño de la fuente de los botones */
-    }
+  .counter-button {
+    padding: 5px 8px;
+    font-size: 14px;
+  }
 
-    .counter-value {
-        font-size: 14px; /* Ajusta el tamaño del contador */
-    }
+  .counter-value {
+    font-size: 14px;
+  }
 
-    .resultados-container {
-        width: 90%; /* Ajusta el ancho al 90% */
-        height: 40px; /* Hace que el contenedor de resultados sea más pequeño */
-        padding: 10px;
-    }
+  .resultados-container {
+    width: 90%;
+    height: 40px;
+    padding: 10px;
+  }
 
-    .marcador {
-        font-size: 18px; /* Reduce el tamaño del marcador */
-    }
+  .marcador {
+    font-size: 18px;
+  }
 
-    .resultado-section {
-        font-size: 18px; /* Ajusta el tamaño del marcador de los resultados */
-    }
+  .resultado-section {
+    font-size: 18px;
+  }
 
-    .separador {
-        font-size: 24px; /* Reduce el tamaño del separador */
-    }
-    .download-button{
-      margin-top: -20px;  
-    }
-    .download-button,
-    .submit-button {
-        width: 100%;
-        padding: 8px;
-        font-size: 14px; /* Disminuye el tamaño de los botones */
-        
-    }
+  .separador {
+    font-size: 24px;
+  }
 
-    .selected-team {
-        font-size: 14px; /* Ajusta el tamaño de la fuente */
-        padding: 5px 10px; /* Ajusta el padding */
-        width: 97%;
-    }
+  .download-button {
+    margin-top: -20px;
+  }
 
-    .coach {
-        font-size: 12px; /* Reduce el tamaño de la fuente de los entrenadores */
-        margin: 0px 0;
-    }
+  .download-button,
+  .submit-button {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+  }
 
-    .coach p {
-        font-size: 12px; /* Ajusta el tamaño de la fuente dentro del coach */
-    }
+  .selected-team {
+    font-size: 14px;
+    padding: 5px 10px;
+    width: 97%;
+  }
 
-    /* Ajusta el tamaño de las celdas de la tabla */
-    .equipo-section table th, .equipo-section table td {
-        padding: 3px;
-    }
+  .coach {
+    font-size: 12px;
+    margin: 0px 0;
+  }
 
-    /* Ajustes adicionales para pequeñas pantallas */
-    .expulsiones-yellow, .expulsiones-red {
-        font-size: 12px; /* Disminuye el tamaño de las expulsiones */
-    }
+  .coach p {
+    font-size: 12px;
+  }
+
+  .equipo-section table th,
+  .equipo-section table td {
+    padding: 3px;
+  }
+
+  .expulsiones-yellow,
+  .expulsiones-red {
+    font-size: 12px;
+  }
 }
-

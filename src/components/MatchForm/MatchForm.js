@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import * as XLSX from 'xlsx'; // Excel
+import { jsPDF } from 'jspdf'; // PDF
+import 'jspdf-autotable';
 import './MatchForm.css';
+import logo from '../../assets/images/bwmf.png';
+import wallpaper from '../../assets/images/form-wallpaper.png';
 
 const MatchForm = () => {
   const [equipos, setEquipos] = useState([]);
@@ -24,35 +29,42 @@ const MatchForm = () => {
   // Cargar equipos
   useEffect(() => {
     axios.get('http://16.170.214.129:8080/equipos')
-      .then(res => setEquipos(res.data))
-      .catch(err => console.error(err));
+      .then(response => setEquipos(response.data))
+      .catch(error => console.error('Error fetching equipos:', error));
   }, []);
 
-  // Cargar jugadores y coach
+  // Cargar jugadores y coach del equipo local
   useEffect(() => {
     if (equipoLocal) {
       axios.get(`http://16.170.214.129:8080/equipos/${equipoLocal}/jugadores`)
-        .then(res => setJugadoresLocal(res.data))
-        .catch(err => console.error(err));
+        .then(response => setJugadoresLocal(response.data))
+        .catch(error => console.error('Error fetching jugadores local:', error));
 
       axios.get(`http://16.170.214.129:8080/equipos/${equipoLocal}/staff`)
-        .then(res => setEntrenadorLocal(res.data.find(p => p.rol === 'coach') || null))
-        .catch(err => console.error(err));
+        .then(response => {
+          const entrenador = response.data.find(person => person.rol === 'coach');
+          setEntrenadorLocal(entrenador || null);
+        })
+        .catch(error => console.error('Error fetching entrenador local:', error));
     } else {
       setJugadoresLocal([]);
       setEntrenadorLocal(null);
     }
   }, [equipoLocal]);
 
+  // Cargar jugadores y coach del equipo visitante
   useEffect(() => {
     if (equipoVisitante) {
       axios.get(`http://16.170.214.129:8080/equipos/${equipoVisitante}/jugadores`)
-        .then(res => setJugadoresVisitante(res.data))
-        .catch(err => console.error(err));
+        .then(response => setJugadoresVisitante(response.data))
+        .catch(error => console.error('Error fetching jugadores visitante:', error));
 
       axios.get(`http://16.170.214.129:8080/equipos/${equipoVisitante}/staff`)
-        .then(res => setEntrenadorVisitante(res.data.find(p => p.rol === 'coach') || null))
-        .catch(err => console.error(err));
+        .then(response => {
+          const entrenador = response.data.find(person => person.rol === 'coach');
+          setEntrenadorVisitante(entrenador || null);
+        })
+        .catch(error => console.error('Error fetching entrenador visitante:', error));
     } else {
       setJugadoresVisitante([]);
       setEntrenadorVisitante(null);
@@ -61,58 +73,202 @@ const MatchForm = () => {
 
   // Manejar goles
   const handleGolesChange = (jugadorId, equipo, incremento) => {
-    const update = equipo === 'local' ? { ...golesLocal } : { ...golesVisitante };
-    update[jugadorId] = Math.max(0, (update[jugadorId] || 0) + incremento);
+    const updateGoles = equipo === 'local' ? { ...golesLocal } : { ...golesVisitante };
+    if (!updateGoles[jugadorId]) updateGoles[jugadorId] = 0;
+    updateGoles[jugadorId] = Math.max(0, updateGoles[jugadorId] + incremento);
 
     if (equipo === 'local') {
-      setGolesLocal(update);
-      setResultadoLocal(Object.values(update).reduce((a, b) => a + b, 0));
+      setGolesLocal(updateGoles);
+      setResultadoLocal(Object.values(updateGoles).reduce((a, b) => a + b, 0));
     } else {
-      setGolesVisitante(update);
-      setResultadoVisitante(Object.values(update).reduce((a, b) => a + b, 0));
+      setGolesVisitante(updateGoles);
+      setResultadoVisitante(Object.values(updateGoles).reduce((a, b) => a + b, 0));
     }
   };
 
   // Manejar expulsiones
   const handleExpulsionesChange = (jugadorId, equipo, incremento) => {
-    const update = equipo === 'local' ? { ...expulsionesLocal } : { ...expulsionesVisitante };
+    const updateExpulsiones = equipo === 'local' ? { ...expulsionesLocal } : { ...expulsionesVisitante };
     const limit = 3;
-    update[jugadorId] = Math.max(0, Math.min(limit, (update[jugadorId] || 0) + incremento));
+    if (!updateExpulsiones[jugadorId]) updateExpulsiones[jugadorId] = 0;
+    updateExpulsiones[jugadorId] = Math.max(0, Math.min(limit, updateExpulsiones[jugadorId] + incremento));
 
-    if (equipo === 'local') setExpulsionesLocal(update);
-    else setExpulsionesVisitante(update);
+    if (equipo === 'local') {
+      setExpulsionesLocal(updateExpulsiones);
+    } else {
+      setExpulsionesVisitante(updateExpulsiones);
+    }
   };
 
-  // Manejar submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
+// Guardar partido en BD con confirmación
+const handleSubmit = (event) => {
+  event.preventDefault();
+
+  const confirmSave = window.confirm("¿Estás seguro de que quieres guardar este partido?");
+  if (!confirmSave) return;
+
+  const fechaPartido = new Date().toISOString().split('T')[0];
+
+  const matchData = {
+    fecha: fechaPartido,
+    equipoLocal: { id: equipoLocal },
+    equipoVisitante: { id: equipoVisitante },
+    resultadoLocal: resultadoLocal,
+    resultadoVisitante: resultadoVisitante,
+    actas: [
+      ...Object.keys(golesLocal).map(id => ({
+        jugador: { id: id },
+        goles: golesLocal[id],
+        expulsiones: expulsionesLocal[id] || 0
+      })),
+      ...Object.keys(golesVisitante).map(id => ({
+        jugador: { id: id },
+        goles: golesVisitante[id],
+        expulsiones: expulsionesVisitante[id] || 0
+      }))
+    ]
+  };
+
+  axios.post('http://16.170.214.129:8080/partidos/guardar', matchData)
+    .then(() => alert('✅ Partido guardado exitosamente'))
+    .catch(error => console.error('Error saving match:', error));
+};
+
+  // Descargar PDF
+  const handleDownloadPDF = () => {
     const fechaPartido = new Date().toISOString().split('T')[0];
+    const nombreLocal = equipos.find(e => e.id === equipoLocal)?.nombre || 'Equipo A';
+    const nombreVisitante = equipos.find(e => e.id === equipoVisitante)?.nombre || 'Equipo B';
+    const nombreEntrenadorLocal = entrenadorLocal ? `${entrenadorLocal.nombre} ${entrenadorLocal.apellido}` : 'Not found';
+    const nombreEntrenadorVisitante = entrenadorVisitante ? `${entrenadorVisitante.nombre} ${entrenadorVisitante.apellido}` : 'Not found';
 
-    const matchData = {
-      fecha: fechaPartido,
-      equipoLocal: { id: equipoLocal },
-      equipoVisitante: { id: equipoVisitante },
-      resultadoLocal,
-      resultadoVisitante,
-      actas: [
-        ...Object.keys(golesLocal).map(id => ({ jugador: { id }, goles: golesLocal[id], expulsiones: expulsionesLocal[id] || 0 })),
-        ...Object.keys(golesVisitante).map(id => ({ jugador: { id }, goles: golesVisitante[id], expulsiones: expulsionesVisitante[id] || 0 }))
-      ]
-    };
+    const headColumns = [['Gorro', 'Jugador', 'Goles', 'Expulsiones']];
+    const bodyLocal = jugadoresLocal.map(jug => [
+      jug.numeroGorro,
+      jug.nombre,
+      golesLocal[jug.id] || 0,
+      expulsionesLocal[jug.id] || 0
+    ]);
+    const bodyVisit = jugadoresVisitante.map(jug => [
+      jug.numeroGorro,
+      jug.nombre,
+      golesVisitante[jug.id] || 0,
+      expulsionesVisitante[jug.id] || 0
+    ]);
 
-    axios.post('http://16.170.214.129:8080/partidos/guardar', matchData)
-      .then(() => alert('Partido guardado exitosamente'))
-      .catch(err => console.error(err));
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'px', format: 'a4' });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+
+    // Fondo y logos
+    doc.addImage(wallpaper, 'PNG', 0, 0, pageWidth, pageHeight);
+    doc.addImage(logo, 'PNG', 20, 15, 50, 50);
+    doc.addImage(logo, 'PNG', pageWidth - 70, 15, 50, 50);
+
+    // Título
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(255, 255, 255);
+    doc.text(`ACTA PARTIDO ${nombreLocal} VS ${nombreVisitante}`, pageWidth / 2, 50, { align: 'center' });
+
+    const tableWidth = 240;
+    const leftMarginLocal = 30;
+    const leftMarginVisit = pageWidth - tableWidth - 30;
+    const startY = 100;
+
+    // Local
+    doc.setFontSize(14);
+    doc.text(nombreLocal, leftMarginLocal, startY);
+    doc.setTextColor(0, 0, 0);
+    doc.autoTable({
+      startY: startY + 10,
+      tableWidth,
+      margin: { left: leftMarginLocal },
+      head: headColumns,
+      body: bodyLocal,
+      theme: 'grid',
+      headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255], halign: 'center' },
+      bodyStyles: { halign: 'center' },
+      columnStyles: {
+        0: { cellWidth: 35 },
+        1: { cellWidth: 105 },
+        2: { cellWidth: 40 },
+        3: { cellWidth: 60 }
+      },
+      didParseCell: data => {
+        if (data.section === 'body' && data.column.index === 3) {
+          if (Number(data.cell.raw) === 3) {
+            data.cell.styles.fillColor = [255, 0, 0];
+            data.cell.styles.textColor = [255, 255, 255];
+          }
+        }
+      }
+    });
+    const localTableEndY = doc.lastAutoTable.finalY;
+    doc.setFontSize(12);
+    doc.setTextColor(255, 255, 255);
+    doc.text(`Entrenador: ${nombreEntrenadorLocal}`, leftMarginLocal, localTableEndY + 15);
+
+    // Visitante
+    doc.setFontSize(14);
+    doc.text(nombreVisitante, leftMarginVisit, startY);
+    doc.setTextColor(0, 0, 0);
+    doc.autoTable({
+      startY: startY + 10,
+      tableWidth,
+      margin: { left: leftMarginVisit },
+      head: headColumns,
+      body: bodyVisit,
+      theme: 'grid',
+      headStyles: { fillColor: [0, 0, 0], textColor: [255, 255, 255], halign: 'center' },
+      bodyStyles: { halign: 'center' },
+      columnStyles: {
+        0: { cellWidth: 35 },
+        1: { cellWidth: 105 },
+        2: { cellWidth: 40 },
+        3: { cellWidth: 60 }
+      },
+      didParseCell: data => {
+        if (data.section === 'body' && data.column.index === 3) {
+          if (Number(data.cell.raw) === 3) {
+            data.cell.styles.fillColor = [255, 0, 0];
+            data.cell.styles.textColor = [255, 255, 255];
+          }
+        }
+      }
+    });
+    const visitTableEndY = doc.lastAutoTable.finalY;
+    doc.setFontSize(12);
+    doc.setTextColor(255, 255, 255);
+    doc.text(`Entrenador: ${nombreEntrenadorVisitante}`, leftMarginVisit, visitTableEndY + 15);
+
+    // Resultado
+    const maxEndY = Math.max(localTableEndY, visitTableEndY);
+    const resultStartY = maxEndY + 60;
+    doc.setFontSize(16);
+    doc.setTextColor(255, 255, 255);
+    doc.text('RESULTADO', pageWidth / 2, resultStartY, { align: 'center' });
+    doc.setFontSize(14);
+    doc.text(`${resultadoLocal} - ${resultadoVisitante}`, pageWidth / 2, resultStartY + 20, { align: 'center' });
+
+    let ganador = 'Empate';
+    if (resultadoLocal > resultadoVisitante) ganador = nombreLocal;
+    if (resultadoLocal < resultadoVisitante) ganador = nombreVisitante;
+    doc.text(`GANADOR: ${ganador}`, pageWidth / 2, resultStartY + 40, { align: 'center' });
+
+    const safeLocal = nombreLocal.replace(/\s+/g, '_');
+    const safeVisit = nombreVisitante.replace(/\s+/g, '_');
+    doc.save(`partido_${fechaPartido}_${safeLocal}_vs_${safeVisit}_bwmf.pdf`);
   };
 
   // Selección de equipo
-  const handleSelectEquipo = (id, tipo) => {
+  const handleSelectEquipo = (equipoId, tipo) => {
     if (tipo === 'local') {
-      setEquipoLocal(id);
+      setEquipoLocal(equipoId);
       setSearchLocal('');
       setShowDropdownLocal(false);
     } else {
-      setEquipoVisitante(id);
+      setEquipoVisitante(equipoId);
       setSearchVisitante('');
       setShowDropdownVisitante(false);
     }
@@ -123,10 +279,8 @@ const MatchForm = () => {
 
   return (
     <div className="match-form-container">
-
       <div className="equipos-container">
-
-        {/* ======== Local ======== */}
+        {/* Local */}
         <div className="equipo-section">
           {!equipoLocal ? (
             <div className="dropdown-container">
@@ -137,11 +291,14 @@ const MatchForm = () => {
                 value={searchLocal}
                 onClick={() => setShowDropdownLocal(!showDropdownLocal)}
                 onChange={e => setSearchLocal(e.target.value)}
+                className="search-input"
               />
               {showDropdownLocal && (
                 <ul className="dropdown-list">
-                  {filteredEquiposLocal.map(e => (
-                    <li key={e.id} onClick={() => handleSelectEquipo(e.id, 'local')} className="dropdown-item">{e.nombre}</li>
+                  {filteredEquiposLocal.map(equipo => (
+                    <li key={equipo.id} onClick={() => handleSelectEquipo(equipo.id, 'local')} className="dropdown-item">
+                      {equipo.nombre}
+                    </li>
                   ))}
                 </ul>
               )}
@@ -152,38 +309,42 @@ const MatchForm = () => {
               <button className="remove-button" onClick={() => setEquipoLocal('')}>X</button>
             </div>
           )}
-
           <div className="coach">
             <p>COACH</p>
             <p>{entrenadorLocal ? `${entrenadorLocal.nombre} ${entrenadorLocal.apellido}` : 'Not found'}</p>
           </div>
-
-          <table>
+          <table className="equipo-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th></th>
                 <th>Player</th>
                 <th>Exclusions</th>
                 <th>Goals</th>
               </tr>
             </thead>
             <tbody>
-              {jugadoresLocal.map(j => (
-                <tr key={j.id} className={expulsionesLocal[j.id] >= 3 ? 'expulsiones-red' : expulsionesLocal[j.id] === 2 ? 'expulsiones-yellow' : ''}>
-                  <td>{j.numeroGorro}</td>
-                  <td>{j.nombre}</td>
+              {jugadoresLocal.map(jugador => (
+                <tr
+                  key={jugador.id}
+                  className={`jugador-row ${
+                    expulsionesLocal[jugador.id] >= 3 ? 'expulsiones-red' :
+                    expulsionesLocal[jugador.id] === 2 ? 'expulsiones-yellow' : ''
+                  }`}
+                >
+                  <td>{jugador.numeroGorro}</td>
+                  <td>{jugador.nombre}</td>
                   <td>
                     <div className="counter-container">
-                      <button className="counter-button" onClick={() => handleExpulsionesChange(j.id, 'local', -1)} disabled={expulsionesLocal[j.id] <= 0}>-</button>
-                      <span className="counter-value">{expulsionesLocal[j.id] || 0}</span>
-                      <button className="counter-button" onClick={() => handleExpulsionesChange(j.id, 'local', 1)} disabled={expulsionesLocal[j.id] >= 3}>+</button>
+                      <button onClick={() => handleExpulsionesChange(jugador.id, 'local', -1)} disabled={expulsionesLocal[jugador.id] <= 0}>-</button>
+                      <span>{expulsionesLocal[jugador.id] || 0}</span>
+                      <button onClick={() => handleExpulsionesChange(jugador.id, 'local', 1)} disabled={expulsionesLocal[jugador.id] >= 3}>+</button>
                     </div>
                   </td>
                   <td>
                     <div className="counter-container">
-                      <button className="counter-button" onClick={() => handleGolesChange(j.id, 'local', -1)} disabled={golesLocal[j.id] <= 0}>-</button>
-                      <span className="counter-value">{golesLocal[j.id] || 0}</span>
-                      <button className="counter-button" onClick={() => handleGolesChange(j.id, 'local', 1)}>+</button>
+                      <button onClick={() => handleGolesChange(jugador.id, 'local', -1)} disabled={golesLocal[jugador.id] <= 0}>-</button>
+                      <span>{golesLocal[jugador.id] || 0}</span>
+                      <button onClick={() => handleGolesChange(jugador.id, 'local', 1)}>+</button>
                     </div>
                   </td>
                 </tr>
@@ -192,20 +353,20 @@ const MatchForm = () => {
           </table>
         </div>
 
-        {/* ======== Marcador ======== */}
+        {/* Resultado */}
         <div className="resultados-container">
           <div className="resultado-section">
             <div className="marcador">
               <p>{resultadoLocal}</p>
-              <span className="separador">-</span>
+              <span>-</span>
               <p>{resultadoVisitante}</p>
             </div>
           </div>
-          <button className="download-button">DOWNLOAD</button>
+          <button className="download-button" onClick={handleDownloadPDF}>DOWNLOAD</button>
           <button className="submit-button" onClick={handleSubmit}>SAVE</button>
         </div>
 
-        {/* ======== Visitante ======== */}
+        {/* Visitante */}
         <div className="equipo-section">
           {!equipoVisitante ? (
             <div className="dropdown-container">
@@ -216,11 +377,14 @@ const MatchForm = () => {
                 value={searchVisitante}
                 onClick={() => setShowDropdownVisitante(!showDropdownVisitante)}
                 onChange={e => setSearchVisitante(e.target.value)}
+                className="search-input"
               />
               {showDropdownVisitante && (
                 <ul className="dropdown-list">
-                  {filteredEquiposVisitante.map(e => (
-                    <li key={e.id} onClick={() => handleSelectEquipo(e.id, 'visitante')} className="dropdown-item">{e.nombre}</li>
+                  {filteredEquiposVisitante.map(equipo => (
+                    <li key={equipo.id} onClick={() => handleSelectEquipo(equipo.id, 'visitante')} className="dropdown-item">
+                      {equipo.nombre}
+                    </li>
                   ))}
                 </ul>
               )}
@@ -231,38 +395,42 @@ const MatchForm = () => {
               <button className="remove-button" onClick={() => setEquipoVisitante('')}>X</button>
             </div>
           )}
-
           <div className="coach">
             <p>COACH</p>
             <p>{entrenadorVisitante ? `${entrenadorVisitante.nombre} ${entrenadorVisitante.apellido}` : 'Not found'}</p>
           </div>
-
-          <table>
+          <table className="equipo-table">
             <thead>
               <tr>
-                <th>#</th>
+                <th></th>
                 <th>Player</th>
                 <th>Exclusions</th>
                 <th>Goals</th>
               </tr>
             </thead>
             <tbody>
-              {jugadoresVisitante.map(j => (
-                <tr key={j.id} className={expulsionesVisitante[j.id] >= 3 ? 'expulsiones-red' : expulsionesVisitante[j.id] === 2 ? 'expulsiones-yellow' : ''}>
-                  <td>{j.numeroGorro}</td>
-                  <td>{j.nombre}</td>
+              {jugadoresVisitante.map(jugador => (
+                <tr
+                  key={jugador.id}
+                  className={`jugador-row ${
+                    expulsionesVisitante[jugador.id] >= 3 ? 'expulsiones-red' :
+                    expulsionesVisitante[jugador.id] === 2 ? 'expulsiones-yellow' : ''
+                  }`}
+                >
+                  <td>{jugador.numeroGorro}</td>
+                  <td>{jugador.nombre}</td>
                   <td>
                     <div className="counter-container">
-                      <button className="counter-button" onClick={() => handleExpulsionesChange(j.id, 'visitante', -1)} disabled={expulsionesVisitante[j.id] <= 0}>-</button>
-                      <span className="counter-value">{expulsionesVisitante[j.id] || 0}</span>
-                      <button className="counter-button" onClick={() => handleExpulsionesChange(j.id, 'visitante', 1)} disabled={expulsionesVisitante[j.id] >= 3}>+</button>
+                      <button onClick={() => handleExpulsionesChange(jugador.id, 'visitante', -1)} disabled={expulsionesVisitante[jugador.id] <= 0}>-</button>
+                      <span>{expulsionesVisitante[jugador.id] || 0}</span>
+                      <button onClick={() => handleExpulsionesChange(jugador.id, 'visitante', 1)} disabled={expulsionesVisitante[jugador.id] >= 3}>+</button>
                     </div>
                   </td>
                   <td>
                     <div className="counter-container">
-                      <button className="counter-button" onClick={() => handleGolesChange(j.id, 'visitante', -1)} disabled={golesVisitante[j.id] <= 0}>-</button>
-                      <span className="counter-value">{golesVisitante[j.id] || 0}</span>
-                      <button className="counter-button" onClick={() => handleGolesChange(j.id, 'visitante', 1)}>+</button>
+                      <button onClick={() => handleGolesChange(jugador.id, 'visitante', -1)} disabled={golesVisitante[jugador.id] <= 0}>-</button>
+                      <span>{golesVisitante[jugador.id] || 0}</span>
+                      <button onClick={() => handleGolesChange(jugador.id, 'visitante', 1)}>+</button>
                     </div>
                   </td>
                 </tr>
@@ -270,7 +438,6 @@ const MatchForm = () => {
             </tbody>
           </table>
         </div>
-
       </div>
     </div>
   );
